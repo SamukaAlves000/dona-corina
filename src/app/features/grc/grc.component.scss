@@ -1,0 +1,220 @@
+.grc {
+  padding: 28px;
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    gap: 12px;
+  }
+
+  &__title { font-size: 28px; font-weight: 800; color: var(--dc-text); margin: 0; }
+  &__subtitle { font-size: 15px; color: #6b7280; margin: 4px 0 0; }
+
+  &__header-btns { display: flex; gap: 10px; flex-shrink: 0; }
+
+  &__tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+
+  &__tab {
+    padding: 9px 20px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #6b7280;
+    background: #f3f4fb;
+    border: 1.5px solid #e6e8f2;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all .18s;
+
+    &--active {
+      background: var(--dc-primary);
+      border-color: var(--dc-primary);
+      color: #fff;
+    }
+  }
+
+  // ── KPIs ─────────────────────────────────────────────────────────────────────
+  &__kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 18px;
+
+    @media (max-width: 1100px) { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  &__kpi-label { font-size: 13px; color: #6b7280; font-weight: 600; }
+  &__kpi-value { font-size: 32px; font-weight: 800; color: #1f2544; margin-top: 4px; }
+
+  // ── ESG Pillars ──────────────────────────────────────────────────────────────
+  &__pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+
+  &__pillar-card {
+    background: #fff;
+    border: 1px solid #e9ebf3;
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 1px 3px rgba(20,24,51,.05);
+  }
+
+  &__pillar-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__pillar-score { font-size: 22px; font-weight: 800; color: #1f2544; }
+  &__pillar-title { font-size: 15px; font-weight: 800; margin: 10px 0 12px; }
+
+  &__pillar-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 0;
+    font-size: 13px;
+    color: #374151;
+    border-bottom: 1px solid #f1f2f8;
+
+    &:last-child { border-bottom: none; }
+  }
+
+  &__pillar-val { font-weight: 700; }
+
+  // ── GRI table ────────────────────────────────────────────────────────────────
+  &__gri-card {
+    background: #fff;
+    border: 1px solid #e9ebf3;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(20,24,51,.05);
+  }
+
+  &__gri-head-text {
+    padding: 20px 24px 6px;
+  }
+
+  &__gri-title { font-size: 16px; font-weight: 800; }
+  &__gri-sub   { font-size: 13px; color: #6b7280; margin-top: 2px; }
+
+  &__gri-thead,
+  &__gri-row {
+    display: grid;
+    grid-template-columns: 90px 2fr 1.1fr 1fr 1.2fr 70px;
+    padding: 12px 24px;
+    align-items: center;
+  }
+
+  &__gri-thead {
+    border-bottom: 1px solid #eef0f6;
+    border-top: 1px solid #eef0f6;
+    font-size: 11.5px;
+    font-weight: 800;
+    color: #9aa0bd;
+    letter-spacing: .5px;
+    margin-top: 14px;
+  }
+
+  &__gri-row {
+    padding: 13px 24px;
+    border-bottom: 1px solid #f4f5fa;
+
+    &:last-child { border-bottom: none; }
+  }
+
+  &__gri-code  { font-size: 13px; font-weight: 800; color: var(--dc-primary); }
+  &__gri-ind   { font-size: 13.5px; font-weight: 700; }
+  &__gri-tema  { font-size: 12px; color: #9aa0bd; }
+  &__gri-resp,
+  &__gri-evid  { font-size: 12.5px; color: #6b7280; }
+  &__gri-pag   { font-size: 12.5px; color: #6b7280; font-weight: 700; }
+
+  // ── Materialidade ────────────────────────────────────────────────────────────
+  &__mat-grid {
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: 18px;
+  }
+
+  &__mat-card {
+    background: #fff;
+    border: 1px solid #e9ebf3;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(20,24,51,.05);
+  }
+
+  &__mat-title { font-size: 16px; font-weight: 800; margin-bottom: 6px; }
+  &__mat-sub   { font-size: 12.5px; color: #9aa0bd; margin-bottom: 14px; }
+
+  &__mat-plot {
+    position: relative;
+    width: 100%;
+    height: 330px;
+    border-left: 2px solid #e0e3ef;
+    border-bottom: 2px solid #e0e3ef;
+  }
+
+  &__mat-vline {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: #f1f2f8;
+  }
+
+  &__mat-hline {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #f1f2f8;
+  }
+
+  &__mat-corner {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 10.5px;
+    color: #c2c7dc;
+    font-weight: 700;
+  }
+
+  &__theme-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 0;
+    border-bottom: 1px solid #f1f2f8;
+
+    &:last-of-type { border-bottom: none; }
+  }
+
+  &__theme-label { flex: 1; font-size: 13.5px; font-weight: 600; }
+
+  &__add-tema-btn {
+    width: 100%;
+    margin-top: 14px;
+    padding: 11px;
+    border: 1.5px dashed #c7cce0;
+    background: #fff;
+    color: var(--dc-primary);
+    border-radius: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: var(--dc-font);
+
+    &:hover { background: #f3f4fb; }
+  }
+}

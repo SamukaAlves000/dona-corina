@@ -1,0 +1,73 @@
+<div class="docsger">
+
+  <div class="docsger__header">
+    <div>
+      <h1 class="docsger__title">Documentos em Geração</h1>
+      <p class="docsger__subtitle">
+        Documentos vivos — a Corina acompanha o andamento, aponta pendências e campos
+        ausentes, e encaminha para <strong>aprovação humana</strong>. Ela consulta os módulos
+        respeitando RBAC e LGPD.
+      </p>
+    </div>
+  </div>
+
+  <!-- DocFlow chips -->
+  <div class="docsger__flow-chips">
+    @for (f of docFlow; track f) {
+      <span class="docsger__flow-chip">{{ f }}</span>
+    }
+  </div>
+
+  <!-- Table -->
+  <div class="docsger__table-wrap">
+
+    <div class="docsger__thead">
+      <div>DOCUMENTO</div>
+      <div>RESPONSÁVEL</div>
+      <div>CONCLUSÃO</div>
+      <div>STATUS</div>
+      <div>PENDÊNCIA / CAMPOS AUSENTES</div>
+      <div></div>
+    </div>
+
+    @for (d of docs; track d.id) {
+      <div class="docsger__row">
+        <div>
+          <div class="docsger__doc-name">{{ d.doc }}</div>
+          <div class="docsger__doc-tipo">{{ d.tipo }}</div>
+        </div>
+        <div class="docsger__resp">{{ d.resp }}</div>
+        <div class="docsger__conclusao">
+          <div class="docsger__bar-bg">
+            <div [style]="d.barStyle"></div>
+          </div>
+          <span class="docsger__pct">{{ d.pct }}</span>
+        </div>
+        <div><span [style]="d.statusStyle">{{ d.status }}</span></div>
+        <div>
+          <div class="docsger__pend">{{ d.pend }}</div>
+          @if (d.falta) {
+            <div class="docsger__falta">{{ d.falta }}</div>
+          }
+        </div>
+        <div class="docsger__actions">
+          <button class="docsger__btn-abrir">Abrir</button>
+          <button class="docsger__btn-aprovar">▶</button>
+        </div>
+      </div>
+    }
+
+  </div>
+
+  <!-- Footer disclaimer -->
+  <div class="docsger__disclaimer">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6d28d9" stroke-width="2.2"
+         stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 9v4M12 17h.01"/>
+      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+    </svg>
+    A Corina pode consultar, sugerir, preencher minutas e apontar inconsistências — mas não
+    emite documento final sem aprovação humana. Toda ação gera log e trilha de auditoria.
+  </div>
+
+</div>

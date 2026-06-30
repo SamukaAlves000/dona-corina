@@ -1,0 +1,41 @@
+<div class="trein">
+
+  <div class="trein__header">
+    <div>
+      <h1 class="trein__title">Treinamentos de SST</h1>
+      <p class="trein__subtitle">Controle por NR, cargo e risco — com validade, evidências e alertas de vencimento.</p>
+    </div>
+    <button class="dc-btn-primary">+ Novo Treinamento</button>
+  </div>
+
+  <div class="trein__kpis">
+    @for (k of treinaKpis; track k.label) {
+      <div [style]="k.cardStyle">
+        <div class="trein__kpi-label">{{ k.label }}</div>
+        <div class="trein__kpi-value">{{ k.value }}</div>
+      </div>
+    }
+  </div>
+
+  <div class="trein__table-card">
+    <div class="trein__thead">
+      <div>TREINAMENTO</div>
+      <div>NORMA</div>
+      <div>CARGO</div>
+      <div>REALIZADO</div>
+      <div>VENCIMENTO</div>
+      <div>STATUS</div>
+    </div>
+    @for (t of treinaRows; track t.nome) {
+      <div class="trein__row">
+        <div class="trein__row-nome">{{ t.nome }}</div>
+        <div><span class="trein__nr-badge">{{ t.nr }}</span></div>
+        <div class="trein__row-meta">{{ t.cargo }}</div>
+        <div class="trein__row-meta">{{ t.realizado }}</div>
+        <div class="trein__row-meta trein__row-meta--bold">{{ t.vencimento }}</div>
+        <div><span [style]="t.statusStyle">{{ t.status }}</span></div>
+      </div>
+    }
+  </div>
+
+</div>

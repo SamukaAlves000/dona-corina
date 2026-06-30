@@ -1,0 +1,202 @@
+<div class="gerador">
+
+  <!-- Page Header -->
+  <div class="gerador__header">
+    <div class="gerador__header-left">
+      <h1 class="gerador__title">Gerar Novo Documento</h1>
+      <p class="gerador__subtitle">Selecione o tipo de documento e informe os dados iniciais.</p>
+    </div>
+    <button class="dc-btn-primary">+ Novo Cliente</button>
+  </div>
+
+  <!-- Client Selector -->
+  <div class="gerador__client-label">Cliente <span class="gerador__required">*</span></div>
+  <select class="gerador__client-select">
+    <option value="">Selecione um cliente</option>
+    <option>Itaús Fertilizantes Ltda</option>
+    <option>Metalúrgica X Ltda</option>
+    <option>Transportes Y S.A.</option>
+    <option>Agroindústria Z</option>
+  </select>
+
+  <div class="gerador__type-label">Tipo de Documento <span class="gerador__required">*</span></div>
+
+  <!-- SST Group -->
+  <div class="gerador__group-label">
+    <span class="gerador__group-dot gerador__group-dot--sst"></span>
+    <span>SST · SAÚDE E SEGURANÇA DO TRABALHO</span>
+  </div>
+  <div class="gerador__doc-grid">
+    @for (doc of sstDocs; track doc.id) {
+      <button
+        class="gerador__doc-card"
+        [class.gerador__doc-card--selected]="isSelected(doc.id)"
+        (click)="selectDoc(doc.id)"
+        type="button"
+      >
+        <div class="gerador__doc-icon" [class.gerador__doc-icon--sst-sel]="isSelected(doc.id)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+            [attr.stroke]="isSelected(doc.id) ? '#4f46e5' : '#9aa0bd'"
+            stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <path d="M14 2v6h6"/>
+          </svg>
+        </div>
+        <div class="gerador__doc-code" [class.gerador__doc-code--sst-sel]="isSelected(doc.id)">{{ doc.code }}</div>
+        <div class="gerador__doc-desc">{{ doc.desc }}</div>
+        @if (isSelected(doc.id)) {
+          <div class="gerador__doc-check gerador__doc-check--sst">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12l4 4L19 6"/>
+            </svg>
+          </div>
+        }
+      </button>
+    }
+  </div>
+
+  <!-- Ambiental Group -->
+  <div class="gerador__group-label">
+    <span class="gerador__group-dot gerador__group-dot--ambiental"></span>
+    <span>AMBIENTAL · ESTUDOS E PROGRAMAS · CONAMA / LEI 6.938/81</span>
+  </div>
+  <div class="gerador__doc-grid">
+    @for (doc of ambientalDocs; track doc.id) {
+      <button
+        class="gerador__doc-card gerador__doc-card--amb"
+        [class.gerador__doc-card--selected]="isSelected(doc.id)"
+        (click)="selectDoc(doc.id)"
+        type="button"
+      >
+        <div class="gerador__doc-icon" [class.gerador__doc-icon--amb-sel]="isSelected(doc.id)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+            [attr.stroke]="isSelected(doc.id) ? '#16a34a' : '#9aa0bd'"
+            stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/>
+            <path d="M2 21c0-3 1.85-5.36 5.08-6"/>
+          </svg>
+        </div>
+        <div class="gerador__doc-code" [class.gerador__doc-code--amb-sel]="isSelected(doc.id)">{{ doc.code }}</div>
+        <div class="gerador__doc-desc">{{ doc.desc }}</div>
+        @if (isSelected(doc.id)) {
+          <div class="gerador__doc-check gerador__doc-check--amb">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12l4 4L19 6"/>
+            </svg>
+          </div>
+        }
+      </button>
+    }
+  </div>
+
+  <!-- Compliance / ESG Group -->
+  <div class="gerador__group-label">
+    <span class="gerador__group-dot gerador__group-dot--compliance"></span>
+    <span>COMPLIANCE / ESG · GOVERNANÇA E SUSTENTABILIDADE</span>
+  </div>
+  <div class="gerador__doc-grid">
+    @for (doc of complianceDocs; track doc.id) {
+      <button
+        class="gerador__doc-card gerador__doc-card--comp"
+        [class.gerador__doc-card--selected]="isSelected(doc.id)"
+        (click)="selectDoc(doc.id)"
+        type="button"
+      >
+        <div class="gerador__doc-icon" [class.gerador__doc-icon--comp-sel]="isSelected(doc.id)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+            [attr.stroke]="isSelected(doc.id) ? '#9333ea' : '#9aa0bd'"
+            stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <div class="gerador__doc-code" [class.gerador__doc-code--comp-sel]="isSelected(doc.id)">{{ doc.code }}</div>
+        <div class="gerador__doc-desc">{{ doc.desc }}</div>
+        @if (isSelected(doc.id)) {
+          <div class="gerador__doc-check gerador__doc-check--comp">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9333ea" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12l4 4L19 6"/>
+            </svg>
+          </div>
+        }
+      </button>
+    }
+  </div>
+
+  <!-- Outros Group -->
+  <div class="gerador__group-label">
+    <span class="gerador__group-dot gerador__group-dot--outros"></span>
+    <span>OUTROS · CONTRATOS E DOCUMENTAÇÃO GERAL</span>
+  </div>
+  <div class="gerador__doc-grid">
+    @for (doc of outrosDocs; track doc.id) {
+      <button
+        class="gerador__doc-card gerador__doc-card--outros"
+        [class.gerador__doc-card--selected]="isSelected(doc.id)"
+        (click)="selectDoc(doc.id)"
+        type="button"
+      >
+        <div class="gerador__doc-icon" [class.gerador__doc-icon--outros-sel]="isSelected(doc.id)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+            [attr.stroke]="isSelected(doc.id) ? '#f59e0b' : '#9aa0bd'"
+            stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <path d="M14 2v6h6"/>
+            <path d="M8 13h8M8 17h5"/>
+          </svg>
+        </div>
+        <div class="gerador__doc-code" [class.gerador__doc-code--outros-sel]="isSelected(doc.id)">{{ doc.code }}</div>
+        <div class="gerador__doc-desc">{{ doc.desc }}</div>
+        @if (isSelected(doc.id)) {
+          <div class="gerador__doc-check gerador__doc-check--outros">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12l4 4L19 6"/>
+            </svg>
+          </div>
+        }
+      </button>
+    }
+  </div>
+
+  <!-- Source Selector -->
+  <div class="gerador__source-section">
+    <div class="gerador__source-label">Fonte de Geração</div>
+    <div class="gerador__source-options">
+      <button
+        class="gerador__source-btn"
+        [class.gerador__source-btn--active]="source() === 'ia'"
+        (click)="setSource('ia')"
+        type="button"
+      >
+        <span class="gerador__source-dot" [class.gerador__source-dot--active]="source() === 'ia'"></span>
+        Gerar via IA (Corina)
+      </button>
+      <button
+        class="gerador__source-btn"
+        [class.gerador__source-btn--active]="source() === 'import'"
+        (click)="setSource('import')"
+        type="button"
+      >
+        <span class="gerador__source-dot" [class.gerador__source-dot--active]="source() === 'import'"></span>
+        Importar Modelo Existente
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer Action -->
+  <div class="gerador__footer">
+    @if (!canAdvance()) {
+      <p class="gerador__hint">Selecione um tipo de documento para continuar.</p>
+    }
+    <button
+      class="dc-btn-primary gerador__advance-btn"
+      [class.gerador__advance-btn--disabled]="!canAdvance()"
+      [disabled]="!canAdvance()"
+      (click)="advance()"
+      type="button"
+    >
+      Avançar ›
+    </button>
+  </div>
+
+</div>

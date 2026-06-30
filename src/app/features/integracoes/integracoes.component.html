@@ -1,0 +1,218 @@
+<section class="integracoes">
+
+  <!-- ── Header ──────────────────────────────────────────────────────────── -->
+  <div class="integracoes__header">
+    <div>
+      <h1 class="integracoes__title">Integrações Externas e APIs</h1>
+      <p class="integracoes__subtitle">
+        Conecte a Corina a qualquer sistema externo (SST, RH, folha, ERP, ambiental, compliance) por API.
+      </p>
+    </div>
+    <div class="integracoes__stats">
+      <span class="integracoes__stat integracoes__stat--connected">
+        <span class="integracoes__stat-dot"></span>
+        {{ connectedCount() }} conectadas
+      </span>
+      <span class="integracoes__stat integracoes__stat--pending">
+        <span class="integracoes__stat-dot"></span>
+        {{ pendingCount() }} pendentes
+      </span>
+      <span class="integracoes__stat integracoes__stat--unconfigured">
+        <span class="integracoes__stat-dot"></span>
+        {{ unconfiguredCount() }} não configuradas
+      </span>
+    </div>
+  </div>
+
+  <!-- ── Integration cards grid ──────────────────────────────────────────── -->
+  <div class="integracoes__grid">
+    @for (integ of integrations(); track integ.id) {
+      <div
+        class="integracoes__card"
+        [class.integracoes__card--selected]="selectedCard() === integ.id"
+        (click)="selectCard(integ.id)"
+      >
+        <div class="integracoes__card-top">
+          <span
+            class="integracoes__icon"
+            [style.background]="integ.iconBg"
+          >{{ integ.icon }}</span>
+          <span class="integracoes__status-badge" [ngClass]="statusVariant(integ.status)">
+            @if (integ.status === 'connected') {
+              <span class="integracoes__live-dot"></span>
+            }
+            {{ integ.statusLabel }}
+          </span>
+        </div>
+
+        <div class="integracoes__card-name">{{ integ.name }}</div>
+        <p class="integracoes__card-desc">{{ integ.description }}</p>
+
+        @if (integ.lastSync) {
+          <div class="integracoes__last-sync">Última sinc.: {{ integ.lastSync }}</div>
+        }
+
+        <button
+          class="integracoes__card-btn"
+          [class.integracoes__card-btn--primary]="integ.status !== 'connected'"
+          [class.integracoes__card-btn--outline]="integ.status === 'connected'"
+          (click)="$event.stopPropagation(); onTestConn()"
+        >
+          {{ cardAction(integ.status) }}
+        </button>
+      </div>
+    }
+  </div>
+
+  <!-- ── Register + Connected split ─────────────────────────────────────── -->
+  <div class="integracoes__split">
+
+    <!-- Register form -->
+    <div class="dc-card integracoes__register">
+      <div class="integracoes__register-title">Cadastrar Integração por API</div>
+
+      <div class="integracoes__form-grid">
+        <div class="integracoes__form-field integracoes__form-field--full">
+          <label class="integracoes__label">NOME DO SISTEMA EXTERNO</label>
+          <input
+            class="dc-input"
+            placeholder="ex.: ERP Protheus, plataforma própria…"
+            [value]="systemName()"
+            (input)="systemName.set($any($event.target).value)"
+          />
+        </div>
+
+        <div class="integracoes__form-field integracoes__form-field--full">
+          <label class="integracoes__label">URL DA API</label>
+          <input
+            class="dc-input"
+            placeholder="https://api.sistema.com/v1"
+            [value]="apiUrl()"
+            (input)="apiUrl.set($any($event.target).value)"
+          />
+        </div>
+
+        <div class="integracoes__form-field">
+          <label class="integracoes__label">TOKEN / API KEY</label>
+          <input
+            class="dc-input"
+            type="password"
+            value="············"
+          />
+        </div>
+
+        <div class="integracoes__form-field">
+          <label class="integracoes__label">AUTENTICAÇÃO</label>
+          <select
+            class="dc-select"
+            [value]="authType()"
+            (change)="authType.set($any($event.target).value)"
+          >
+            @for (opt of authTypes; track opt) {
+              <option [value]="opt">{{ opt }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="integracoes__form-field">
+          <label class="integracoes__label">AMBIENTE</label>
+          <select
+            class="dc-select"
+            [value]="ambiente()"
+            (change)="ambiente.set($any($event.target).value)"
+          >
+            @for (opt of ambientes; track opt) {
+              <option [value]="opt">{{ opt }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="integracoes__form-field">
+          <label class="integracoes__label">SINCRONIZAÇÃO</label>
+          <select
+            class="dc-select"
+            [value]="syncType()"
+            (change)="syncType.set($any($event.target).value)"
+          >
+            @for (opt of syncTypes; track opt) {
+              <option [value]="opt">{{ opt }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="integracoes__form-actions">
+        <button class="dc-btn-outline" (click)="onTestConn()">Testar Conexão</button>
+        <button class="dc-btn-primary" (click)="onSaveInteg()">Salvar Integração</button>
+      </div>
+    </div>
+
+    <!-- Connected list -->
+    <div class="dc-card integracoes__connected">
+      <div class="integracoes__connected-title">Integrações Conectadas</div>
+
+      <div class="integracoes__connected-list">
+        @for (item of connectedList(); track item.nome) {
+          <div class="integracoes__connected-item">
+            <span
+              class="integracoes__connected-dot"
+              [style.background]="item.dotColor"
+            ></span>
+            <div class="integracoes__connected-info">
+              <div class="integracoes__connected-name">{{ item.nome }}</div>
+              <div class="integracoes__connected-sync">Última sinc.: {{ item.sync }}</div>
+            </div>
+            <span
+              class="dc-badge"
+              [style.color]="item.statusColor"
+              [style.background]="item.statusBg"
+            >{{ item.status }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Webhook section ─────────────────────────────────────────────────── -->
+  <div class="integracoes__webhook">
+    <div class="integracoes__webhook-header">
+      <div>
+        <div class="integracoes__webhook-title">Webhook de Entrada</div>
+        <div class="integracoes__webhook-sub">
+          Use esta URL para enviar eventos de sistemas externos para a Corina em tempo real.
+        </div>
+      </div>
+      <span class="integracoes__webhook-badge">Ativo</span>
+    </div>
+
+    <div class="integracoes__webhook-url-row">
+      <div class="integracoes__webhook-label">ENDPOINT URL</div>
+      <div class="integracoes__webhook-url-box">
+        <code class="integracoes__webhook-url">{{ webhookUrl }}</code>
+        <button
+          class="integracoes__copy-btn"
+          (click)="copyWebhook()"
+          [class.integracoes__copy-btn--copied]="copiedWebhook()"
+        >
+          @if (copiedWebhook()) {
+            Copiado!
+          } @else {
+            Copiar
+          }
+        </button>
+      </div>
+    </div>
+
+    <div class="integracoes__webhook-payload-section">
+      <div class="integracoes__webhook-label">EXEMPLO DE PAYLOAD</div>
+      <pre class="integracoes__payload">{{ webhookPayload }}</pre>
+    </div>
+  </div>
+
+  <!-- ── Toast ───────────────────────────────────────────────────────────── -->
+  @if (toastMessage()) {
+    <div class="integracoes__toast">{{ toastMessage() }}</div>
+  }
+
+</section>

@@ -1,0 +1,71 @@
+<div class="pericia">
+
+  <div class="pericia__header">
+    <div>
+      <h1 class="pericia__title">Nova Perícia</h1>
+      <p class="pericia__subtitle">Cadastre os dados do processo e gere documentos periciais.</p>
+    </div>
+  </div>
+
+  <div class="pericia__two-col">
+
+    <!-- Dados do Processo -->
+    <div class="pericia__form-card">
+      <h3 class="pericia__form-title">Dados do Processo</h3>
+      <div class="pericia__form-grid">
+        <div class="pericia__field">
+          <div class="pericia__field-label">Nº DO PROCESSO</div>
+          <input class="pericia__input" value="5001234-56.2024.8.08.0001" />
+        </div>
+        <div class="pericia__field">
+          <div class="pericia__field-label">VARA</div>
+          <input class="pericia__input" value="1ª Vara do Trabalho" />
+        </div>
+        <div class="pericia__field">
+          <div class="pericia__field-label">RECLAMANTE</div>
+          <input class="pericia__input" value="João da Silva" />
+        </div>
+        <div class="pericia__field">
+          <div class="pericia__field-label">RECLAMADA</div>
+          <input class="pericia__input" value="Metalúrgica X Ltda" />
+        </div>
+        <div class="pericia__field">
+          <div class="pericia__field-label">TIPO DE PERÍCIA</div>
+          <select class="pericia__input">
+            <option>Insalubridade</option>
+            <option>Periculosidade</option>
+            <option>Aposentadoria Especial</option>
+          </select>
+        </div>
+        <div class="pericia__field">
+          <div class="pericia__field-label">DATA DA PERÍCIA</div>
+          <input class="pericia__input" value="10/08/2026" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Documentos do Processo -->
+    <div class="pericia__docs-card">
+      <h3 class="pericia__form-title">Documentos do Processo</h3>
+      @for (p of pericdocs; track p) {
+        <div class="pericia__doc-row">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <path d="M14 2v6h6"/>
+          </svg>
+          <span class="pericia__doc-name">{{ p }}</span>
+        </div>
+      }
+      <button class="pericia__add-doc-btn">+ Adicionar Documento</button>
+    </div>
+
+  </div>
+
+  <!-- Actions -->
+  <div class="pericia__actions">
+    <button class="dc-btn-outline">Gerar Quesitos</button>
+    <button class="pericia__btn-parecer">Gerar Parecer</button>
+    <button class="dc-btn-primary">Gerar Laudo Pericial</button>
+  </div>
+
+</div>

@@ -1,0 +1,165 @@
+<div class="importar">
+
+  <!-- ── Header ──────────────────────────────────────────────────── -->
+  <div class="importar__header">
+    <h1 class="dc-page-title">Importação de Dados</h1>
+    <p class="dc-page-subtitle">
+      Suba arquivos de outros sistemas — a Corina lê, classifica, extrai e vincula ao cliente.
+    </p>
+  </div>
+
+  <!-- ── Upload zone ──────────────────────────────────────────────── -->
+  <label
+    class="importar__dropzone"
+    [class.importar__dropzone--dragging]="isDragging()"
+    [class.importar__dropzone--has-file]="hasFile()"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave()"
+    (drop)="onDrop($event)"
+  >
+    <input
+      type="file"
+      class="importar__file-input"
+      accept=".xlsx,.xls,.csv,.pdf,.docx,.doc,.txt,.xml,.json,.zip,.png,.jpg,.webp"
+      (change)="onFileInput($event)"
+    />
+
+    @if (!hasFile()) {
+      <div class="importar__dropzone-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+             stroke="#4f46e5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+      </div>
+      <p class="importar__dropzone-title">Arraste e solte arquivos aqui ou clique para selecionar</p>
+      <p class="importar__dropzone-sub">
+        Múltiplos arquivos · PDF · DOC · DOCX · XLS · XLSX · CSV · TXT · XML · JSON · ZIP · PNG · JPG · WEBP
+      </p>
+    } @else {
+      <div class="importar__dropzone-icon importar__dropzone-icon--success">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+             stroke="#15803d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <p class="importar__dropzone-title">{{ selectedFile() }}</p>
+      <p class="importar__dropzone-sub">Arquivo selecionado · clique para trocar</p>
+    }
+  </label>
+
+  <!-- ── Format pills ─────────────────────────────────────────────── -->
+  <div class="importar__formats">
+    @for (t of tipos; track t) {
+      <button
+        class="dc-chip"
+        [class.active]="format() === t.toLowerCase().replace('/ ','').replace(' /','')"
+        (click)="selectFormat(t.toLowerCase().replace('/ ','').replace(' /',''))"
+      >{{ t }}</button>
+    }
+  </div>
+
+  <!-- ── Mapping section (visible after file selected) ────────────── -->
+  @if (hasFile()) {
+    <div class="importar__section dc-card">
+      <p class="importar__section-title">Mapeamento de Colunas</p>
+      <div class="importar__map-table">
+        <div class="importar__map-header">
+          <span>COLUNA ORIGEM</span>
+          <span>CAMPO DESTINO</span>
+          <span>AMOSTRA</span>
+        </div>
+        @for (row of mappingRows; track row.coluna) {
+          <div class="importar__map-row">
+            <span class="importar__map-col">{{ row.coluna }}</span>
+            <span class="importar__map-dest">{{ row.destino }}</span>
+            <span class="importar__map-sample">{{ row.amostra }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- ── Preview table ──────────────────────────────────────────── -->
+    <div class="importar__section dc-card">
+      <p class="importar__section-title">Pré-visualização (5 primeiras linhas)</p>
+      <div class="importar__preview-table">
+        <div class="dc-table-header importar__preview-grid">
+          @for (col of previewCols; track col) {
+            <span>{{ col | uppercase }}</span>
+          }
+        </div>
+        @for (row of previewRows; track row['cpf']) {
+          <div class="dc-table-row importar__preview-grid">
+            @for (col of previewCols; track col) {
+              <span class="importar__preview-cell">{{ row[col] }}</span>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- ── Import button ──────────────────────────────────────────── -->
+    <div class="importar__actions">
+      <button class="dc-btn-outline" (click)="clearFile()">Cancelar</button>
+      <button class="dc-btn-primary importar__btn-import" (click)="triggerImport()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Importar Arquivo
+      </button>
+    </div>
+  }
+
+  <!-- ── Recent imports list ──────────────────────────────────────── -->
+  <div class="importar__section">
+    <p class="importar__section-title">Importações Recentes</p>
+    <div class="importar__recent dc-card" style="padding:0">
+      <div class="dc-table-header importar__recent-grid">
+        <span>ARQUIVO</span>
+        <span>TIPO</span>
+        <span>VÍNCULO</span>
+        <span>HASH</span>
+        <span>USUÁRIO / DATA</span>
+        <span>STATUS</span>
+      </div>
+      @for (item of recentImports; track item.hash) {
+        <div class="dc-table-row importar__recent-grid">
+          <div class="importar__recent-name">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                 stroke="#4f46e5" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <path d="M14 2v6h6"/>
+            </svg>
+            <span>{{ item.nome }}</span>
+          </div>
+          <span class="importar__recent-meta">{{ item.tipo }}</span>
+          <span class="importar__recent-meta">{{ item.vinculo }}</span>
+          <span class="importar__recent-hash">{{ item.hash }}</span>
+          <span class="importar__recent-meta">{{ item.user }}</span>
+          <span>
+            <span class="importar__status-pill"
+                  [style.color]="statusStyle(item.statusVariant).color"
+                  [style.background]="statusStyle(item.statusVariant).bg">
+              {{ item.status }}
+            </span>
+          </span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- ── LGPD footer note ─────────────────────────────────────────── -->
+  <div class="importar__lgpd">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+         stroke="#16a34a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M8 12l2.5 2.5L16 9"/>
+    </svg>
+    Cada upload registra hash, usuário, data/hora e log LGPD · marcado como evidência.
+  </div>
+
+</div>

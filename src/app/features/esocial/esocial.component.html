@@ -1,0 +1,205 @@
+<div class="esocial">
+
+  <!-- ── Header row ───────────────────────────────────────────────── -->
+  <div class="esocial__header">
+    <div>
+      <h1 class="dc-page-title">eSocial SST</h1>
+      <p class="dc-page-subtitle">
+        Geração e validação de XML dos eventos SST (leiaute S-1.3 · MOS).
+      </p>
+    </div>
+    <button class="dc-btn-primary esocial__btn-novo" (click)="novoEvento()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      Novo Evento
+    </button>
+  </div>
+
+  <!-- ── Event tabs ────────────────────────────────────────────────── -->
+  <div class="esocial__tabs">
+    @for (tab of tabs; track tab.code) {
+      <button
+        class="esocial__tab"
+        [class.esocial__tab--active]="activeEvent() === tab.code"
+        (click)="setActive(tab.code)"
+      >
+        <span class="esocial__tab-code">{{ tab.code }}</span>
+        <span class="esocial__tab-label">{{ tab.label }}</span>
+        <span
+          class="esocial__tab-count"
+          [class.esocial__tab-count--active]="activeEvent() === tab.code"
+        >{{ tab.count }}</span>
+      </button>
+    }
+  </div>
+
+  <!-- ── Main 2-col layout ────────────────────────────────────────── -->
+  <div class="esocial__body">
+
+    <!-- LEFT ──────────────────────────────────────────────────────── -->
+    <div class="esocial__left">
+      <div class="dc-card esocial__form-card">
+
+        <div class="esocial__form-title">
+          S-2240 — Condições do Ambiente de Trabalho
+          <span class="dc-badge esocial__form-badge">Rascunho</span>
+        </div>
+        <p class="esocial__form-desc">
+          Informe os dados do vínculo e os agentes nocivos identificados no LTCAT/PGR.
+        </p>
+
+        <!-- Form fields grid -->
+        <div class="esocial__fields">
+
+          <!-- Colaborador -->
+          <div class="esocial__field">
+            <label class="esocial__label">Colaborador</label>
+            <select class="dc-select">
+              <option value="">Selecione o colaborador</option>
+              <option value="1">Ana Lima — CPF 000.000.000-00</option>
+              <option value="2">Carlos Souza — CPF 111.111.111-11</option>
+            </select>
+          </div>
+
+          <!-- Setor / Cargo -->
+          <div class="esocial__field">
+            <label class="esocial__label">Setor / Cargo</label>
+            <input class="dc-input" type="text" placeholder="Ex.: Produção / Operador" />
+          </div>
+
+          <!-- Data Referência -->
+          <div class="esocial__field">
+            <label class="esocial__label">Data Referência</label>
+            <input class="dc-input" type="date" />
+          </div>
+
+          <!-- Resp. Técnico -->
+          <div class="esocial__field">
+            <label class="esocial__label">Resp. Técnico</label>
+            <input class="dc-input" type="text" placeholder="Nome do responsável técnico" />
+          </div>
+
+        </div>
+
+        <!-- Agentes Nocivos table -->
+        <div class="esocial__agents-section">
+          <div class="esocial__agents-header">
+            <span class="esocial__agents-title">Agentes Nocivos</span>
+            <button class="dc-btn-outline esocial__btn-add" (click)="adicionarAgente()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              Adicionar Agente
+            </button>
+          </div>
+
+          <div class="esocial__table-wrap">
+            <table class="esocial__table">
+              <thead>
+                <tr class="dc-table-header">
+                  <th>Agente</th>
+                  <th>Tipo</th>
+                  <th>Nível</th>
+                  <th>EPC</th>
+                  <th>EPI</th>
+                  <th>Exposição</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (ag of agentes; track ag.agente) {
+                  <tr class="dc-table-row">
+                    <td class="esocial__td--bold">{{ ag.agente }}</td>
+                    <td>
+                      <span class="dc-chip esocial__chip--fisico">{{ ag.tipo }}</span>
+                    </td>
+                    <td class="esocial__td--level">{{ ag.nivel }}</td>
+                    <td>{{ ag.epc }}</td>
+                    <td>{{ ag.epi }}</td>
+                    <td>{{ ag.exposicao }}</td>
+                    <td>
+                      <button class="esocial__row-btn" title="Remover">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="3 6 5 6 21 6"/>
+                          <path d="M19 6l-1 14H6L5 6"/>
+                          <path d="M10 11v6M14 11v6"/>
+                          <path d="M9 6V4h6v2"/>
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="esocial__form-actions">
+          <button class="dc-btn-outline" (click)="salvarRascunho()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+              <polyline points="17 21 17 13 7 13 7 21"/>
+              <polyline points="7 3 7 8 15 8"/>
+            </svg>
+            Salvar Rascunho
+          </button>
+          <button class="dc-btn-primary" (click)="preValidar()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            Pré-validar
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT (380px) ─────────────────────────────────────────────── -->
+    <aside class="esocial__right">
+      <div class="esocial__xml-panel">
+
+        <!-- XML panel header -->
+        <div class="esocial__xml-header">
+          <span class="esocial__xml-title">Pré-visualização XML</span>
+          <span class="esocial__xml-badge">RASCUNHO</span>
+        </div>
+
+        <!-- XML content -->
+        <pre class="esocial__xml-pre">{{ xmlPreview }}</pre>
+
+        <!-- Disabled action buttons -->
+        <div class="esocial__xml-actions">
+          <button class="esocial__xml-btn" disabled>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            Validar
+          </button>
+          <button class="esocial__xml-btn esocial__xml-btn--transmit" disabled>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+            Transmitir
+          </button>
+        </div>
+
+      </div>
+    </aside>
+
+  </div>
+
+</div>

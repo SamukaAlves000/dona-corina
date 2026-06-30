@@ -1,0 +1,72 @@
+.cfg {
+  padding: 28px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    gap: 12px;
+  }
+
+  &__title {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--dc-text);
+    margin: 0;
+  }
+
+  &__subtitle {
+    font-size: 15px;
+    color: #6b7280;
+    margin: 4px 0 0;
+  }
+
+  // ── Toggle list ───────────────────────────────────────────────────────────────
+  &__list {
+    max-width: 720px;
+    background: #fff;
+    border: 1px solid #e9ebf3;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(20,24,51,.05);
+    margin-bottom: 18px;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    border-bottom: 1px solid #f4f5fa;
+
+    &:last-child { border-bottom: none; }
+  }
+
+  &__row-text { padding-right: 24px; flex: 1; }
+
+  &__row-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--dc-text);
+  }
+
+  &__row-sub {
+    font-size: 13px;
+    color: #9aa0bd;
+    margin-top: 2px;
+    line-height: 1.4;
+  }
+
+  // ── Guardrails banner ─────────────────────────────────────────────────────────
+  &__guardrails {
+    max-width: 720px;
+    padding: 18px 22px;
+    background: #eef0fe;
+    border: 1px solid #d9d6fb;
+    border-radius: 14px;
+    font-size: 13.5px;
+    color: #3730a3;
+    line-height: 1.6;
+  }
+}

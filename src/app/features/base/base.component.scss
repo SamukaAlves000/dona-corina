@@ -1,0 +1,75 @@
+.base {
+  padding: 28px;
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+
+  &__title { font-size: 28px; font-weight: 800; color: var(--dc-text); margin: 0; }
+  &__subtitle { font-size: 15px; color: #6b7280; margin: 4px 0 0; }
+
+  &__tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+
+  &__two-col {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  &__cats-card,
+  &__normas-card {
+    background: #fff;
+    border: 1px solid #e9ebf3;
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 1px 3px rgba(20,24,51,.05);
+  }
+
+  &__section-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: #1f2544;
+    margin-bottom: 10px;
+  }
+
+  &__cat-name { font-size: 13.5px; font-weight: 600; color: #374151; }
+
+  &__normas-card { display: flex; flex-direction: column; }
+
+  &__norma-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 16px;
+    background: #f7f8fc;
+    border-radius: 11px;
+    margin-bottom: 9px;
+  }
+
+  &__norma-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1f2544;
+  }
+
+  &__norma-date {
+    font-size: 11.5px;
+    color: #9aa0bd;
+    margin-top: 2px;
+  }
+
+  &__normas-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+  }
+}

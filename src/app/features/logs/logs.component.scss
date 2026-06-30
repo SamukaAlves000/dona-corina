@@ -1,0 +1,139 @@
+.logs {
+  padding: 28px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 18px;
+    gap: 12px;
+  }
+
+  &__title {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--dc-text);
+    margin: 0;
+  }
+
+  &__subtitle {
+    font-size: 15px;
+    color: #6b7280;
+    margin: 4px 0 0;
+  }
+
+  &__export-btn {
+    padding: 10px 20px;
+    background: #fff;
+    color: var(--dc-primary);
+    border: 1.5px solid var(--dc-primary);
+    border-radius: 11px;
+    font-weight: 700;
+    font-size: 13.5px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  &__filters {
+    display: flex;
+    gap: 7px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  &__chip {
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    border: 1.5px solid #e6e8f2;
+    background: #f3f4fb;
+    color: #6b7280;
+    transition: all .18s;
+
+    &--active {
+      background: var(--dc-primary);
+      border-color: var(--dc-primary);
+      color: #fff;
+    }
+  }
+
+  &__table-wrap {
+    background: #0f1330;
+    border: 1px solid #20264f;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  &__thead {
+    display: grid;
+    grid-template-columns: 150px 1.2fr 1.6fr 1fr 1.1fr;
+    padding: 13px 22px;
+    border-bottom: 1px solid #20264f;
+    font-size: 11px;
+    font-weight: 800;
+    color: #6b74a8;
+    letter-spacing: .5px;
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: 150px 1.2fr 1.6fr 1fr 1.1fr;
+    padding: 13px 22px;
+    border-bottom: 1px solid #181d3f;
+    align-items: center;
+
+    &:last-child { border-bottom: none; }
+  }
+
+  &__time {
+    font-size: 12.5px;
+    color: #9aa0c4;
+    font-weight: 600;
+  }
+
+  &__actor {
+    font-size: 13px;
+    color: #e6e8f5;
+    font-weight: 600;
+  }
+
+  &__event-cell {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+
+  &__event-text {
+    font-size: 13px;
+    color: #c8cce8;
+  }
+
+  &__source {
+    font-size: 12px;
+    color: #8a90bd;
+  }
+
+  &__hash {
+    font-size: 11.5px;
+    color: #5b6699;
+    font-family: monospace;
+  }
+
+  &__empty {
+    padding: 32px;
+    text-align: center;
+    color: #6b74a8;
+    font-size: 14px;
+  }
+
+  &__footer {
+    margin-top: 14px;
+    font-size: 12.5px;
+    color: #9aa0bd;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}

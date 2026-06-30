@@ -1,0 +1,287 @@
+<div class="stepper">
+
+  <!-- Breadcrumb + Title -->
+  <div class="stepper__breadcrumb">Templates › {{ docType }} › Preenchimento</div>
+  <h1 class="stepper__title">{{ docType }} — Preenchimento Inteligente</h1>
+
+  <!-- 5-Step Progress Bar -->
+  <div class="stepper__progress">
+    @for (s of stepDefs; track s.num) {
+      <div class="stepper__step-item">
+        <div
+          class="stepper__step-num"
+          [class.stepper__step-num--active]="isActive(s.num)"
+          [class.stepper__step-num--done]="isCompleted(s.num)"
+        >
+          @if (isCompleted(s.num)) {
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12l4 4L19 6"/>
+            </svg>
+          } @else {
+            {{ s.num }}
+          }
+        </div>
+        <span
+          class="stepper__step-label"
+          [class.stepper__step-label--active]="isActive(s.num)"
+          [class.stepper__step-label--done]="isCompleted(s.num)"
+        >{{ s.label }}</span>
+        @if (s.num < totalSteps) {
+          <div class="stepper__step-line" [class.stepper__step-line--done]="isCompleted(s.num + 1) || isActive(s.num + 1)"></div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- ─── STEP 1: Dados da Empresa ─── -->
+  @if (step() === 1) {
+    <div class="stepper__content stepper__content--two-col">
+
+      <!-- Left: company data -->
+      <div class="dc-card stepper__card">
+        <h2 class="stepper__card-title">Dados da Empresa</h2>
+        <div class="stepper__form-grid">
+          <div class="stepper__field">
+            <label class="stepper__field-label">RAZÃO SOCIAL</label>
+            <input class="dc-input" type="text" value="Itaús Fertilizantes Ltda" readonly />
+          </div>
+          <div class="stepper__field">
+            <label class="stepper__field-label">CNPJ</label>
+            <input class="dc-input" type="text" value="05.918.578/0001-60" readonly />
+          </div>
+          <div class="stepper__field stepper__field--full">
+            <label class="stepper__field-label">ENDEREÇO</label>
+            <input class="dc-input" type="text" value="Travessa Peçanhanha, s/n · Área Rural · Itapemirim/ES" readonly />
+          </div>
+          <div class="stepper__field">
+            <label class="stepper__field-label">CNAE / SETOR</label>
+            <input class="dc-input" type="text" value="2013-4/00 · Fertilizantes" readonly />
+          </div>
+          <div class="stepper__field">
+            <label class="stepper__field-label">GRAU DE RISCO</label>
+            <input class="dc-input" type="text" value="3" readonly />
+          </div>
+          <div class="stepper__field stepper__field--full">
+            <label class="stepper__field-label">ATIVIDADE PRINCIPAL</label>
+            <input class="dc-input" type="text" value="Fabricação de fertilizantes com predominância de nitrogênio" readonly />
+          </div>
+          <div class="stepper__field stepper__field--full">
+            <label class="stepper__field-label">RESPONSÁVEL TÉCNICO</label>
+            <select class="dc-select">
+              <option>Eng. Melqui do Vale · CREA 000000</option>
+              <option>Eng. Seg. — selecionar</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: extracted info -->
+      <div class="dc-card stepper__card">
+        <h2 class="stepper__card-title">Informações Extraídas</h2>
+        <p class="stepper__card-sub">automaticamente de documentos e do REGULARE</p>
+        <div class="stepper__extracted-list">
+          @for (e of extractedInfo; track e) {
+            <div class="stepper__extracted-row">
+              <span class="stepper__extracted-text">{{ e }}</span>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M8 12l2.5 2.5L16 9"/>
+              </svg>
+            </div>
+          }
+        </div>
+      </div>
+
+    </div>
+  }
+
+  <!-- ─── STEP 2: Setores e Cargos ─── -->
+  @if (step() === 2) {
+    <div class="stepper__content">
+      <div class="dc-card stepper__card stepper__card--wide">
+        <div class="stepper__setores-header">
+          <div>
+            <h2 class="stepper__card-title">Setores e Cargos</h2>
+            <p class="stepper__card-sub">Defina os Grupos Homogêneos de Exposição (GHE) do estabelecimento.</p>
+          </div>
+          <button class="dc-btn-primary stepper__add-btn" (click)="addSetor()" type="button">
+            + Adicionar Setor
+          </button>
+        </div>
+        <div class="stepper__setores-list">
+          @for (s of setores(); track s.nome) {
+            <div class="stepper__setor-row">
+              <div class="stepper__setor-dot" [style.background]="s.color"></div>
+              <div class="stepper__setor-info">
+                <div class="stepper__setor-nome">{{ s.nome }}</div>
+                <div class="stepper__setor-workers">{{ s.workers }} trabalhadores</div>
+              </div>
+              <span class="stepper__setor-badge" [style.color]="s.color" [style.background]="s.color + '18'">GHE</span>
+              <button class="stepper__setor-edit" type="button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9aa0bd" stroke-width="1.8">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- ─── STEP 3: Riscos e Agentes ─── -->
+  @if (step() === 3) {
+    <div class="stepper__content">
+      <div class="dc-card stepper__card stepper__card--wide">
+        <h2 class="stepper__card-title">Riscos Identificados por GHE</h2>
+        <p class="stepper__card-sub">A Corina cruzou o inventário de risco (NR-09 / NR-15) com os GHE do estabelecimento.</p>
+        <div class="stepper__riscos-table">
+          <div class="stepper__riscos-thead dc-table-header">
+            <span>Agente</span>
+            <span>Tipo</span>
+            <span>Fonte</span>
+            <span>Severidade</span>
+            <span>Probabilidade</span>
+            <span>NR</span>
+          </div>
+          @for (r of riscos; track r.agente) {
+            <div class="stepper__riscos-row dc-table-row">
+              <span class="stepper__riscos-agente">{{ r.agente }}</span>
+              <span class="stepper__riscos-tipo">{{ r.tipo }}</span>
+              <span class="stepper__riscos-fonte">{{ r.fonte }}</span>
+              <span
+                class="stepper__riscos-badge"
+                [style.color]="r.sevColor"
+                [style.background]="r.sevBg"
+              >{{ r.severidade }}</span>
+              <span class="stepper__riscos-prob">{{ r.probabilidade }}</span>
+              <span class="stepper__riscos-nr">{{ r.nr }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- ─── STEP 4: Geração IA ─── -->
+  @if (step() === 4) {
+    <div class="stepper__content">
+      <div class="dc-card stepper__card stepper__card--center">
+        <div class="stepper__spinner"></div>
+        <h2 class="stepper__gen-title">Corina está redigindo o {{ docType }}…</h2>
+        <p class="stepper__gen-sub">
+          Aplicando templates com Content Controls, normas via RAG e checklist de conformidade.
+        </p>
+        <div class="stepper__progress-track">
+          <div
+            class="stepper__progress-fill"
+            [style.width]="genProgress() + '%'"
+          ></div>
+        </div>
+        <div class="stepper__gen-pct">{{ genProgress() }}% concluído</div>
+        <p class="stepper__gen-status">{{ genProgressText() }}</p>
+        <div class="stepper__gen-dots">
+          <span class="stepper__gen-dot"></span>
+          <span class="stepper__gen-dot stepper__gen-dot--2"></span>
+          <span class="stepper__gen-dot stepper__gen-dot--3"></span>
+        </div>
+        <div class="stepper__gen-eta">Tempo estimado: ~45 segundos</div>
+      </div>
+    </div>
+  }
+
+  <!-- ─── STEP 5: Revisão e Aprovação ─── -->
+  @if (step() === 5) {
+    <div class="stepper__content stepper__content--review">
+
+      <!-- Document preview -->
+      <div class="dc-card stepper__card stepper__card--doc">
+        <div class="stepper__doc-header">
+          <div class="stepper__doc-header-title">{{ docType }} — Itaús Fertilizantes Ltda</div>
+          <span class="dc-minuta-badge">MINUTA · REVISÃO HUMANA</span>
+        </div>
+        <div class="stepper__minuta-bar">MINUTA TÉCNICA PARA REVISÃO E APROVAÇÃO HUMANA</div>
+        <div class="stepper__doc-body">
+          <div class="stepper__doc-section-title">1. Identificação do Estabelecimento</div>
+          <p>
+            Documento técnico elaborado conforme NR-01 (GRO/PGR) e NR-15, com base nas condições
+            ambientais de trabalho avaliadas para os GHE do estabelecimento.
+            CNPJ 05.918.578/0001-60, Grau de Risco 3.
+          </p>
+          <div class="stepper__doc-section-title">2. Agentes Nocivos Identificados</div>
+          <p>
+            Ruído contínuo (NEN 88 dB(A) — acima do LT NR-15), agentes químicos inorgânicos e calor.
+            Enquadramentos sujeitos à validação de profissional habilitado.
+          </p>
+          <div class="stepper__doc-section-title">3. Medidas de Controle</div>
+          <p>
+            EPC e EPI por GHE, programa de monitoramento e plano de ação 5W2H vinculado.
+          </p>
+        </div>
+      </div>
+
+      <!-- Right panel -->
+      <div class="stepper__review-panel">
+
+        <!-- Checklist -->
+        <div class="stepper__checklist-card">
+          <div class="stepper__checklist-title">Checklist de Conformidade</div>
+          @for (c of checklist; track c) {
+            <div class="stepper__checklist-row">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12l4 4L19 6"/>
+              </svg>
+              <span>{{ c }}</span>
+            </div>
+          }
+        </div>
+
+        <!-- Responsável técnico -->
+        <div class="dc-card stepper__card stepper__card--rt">
+          <div class="stepper__rt-label">RESPONSÁVEL TÉCNICO</div>
+          <select class="dc-select stepper__rt-select">
+            <option>Eng. Seg. — definir para assinar</option>
+            <option>Eng. Melqui do Vale · CREA 000000</option>
+          </select>
+          <p class="stepper__rt-hint">
+            A emissão fica bloqueada até a definição e assinatura do responsável habilitado.
+          </p>
+        </div>
+
+        <!-- Export buttons -->
+        <div class="stepper__export-row">
+          <button class="dc-btn-primary stepper__export-btn" type="button">
+            Exportar .docx
+          </button>
+          <button class="stepper__export-btn-outline" type="button">
+            .pdf
+          </button>
+        </div>
+
+      </div>
+    </div>
+  }
+
+  <!-- Bottom Navigation -->
+  <div class="stepper__nav">
+    <button
+      class="stepper__nav-back"
+      [class.stepper__nav-back--hidden]="step() === 1"
+      (click)="prevStep()"
+      type="button"
+    >
+      ‹ Voltar
+    </button>
+    @if (step() < totalSteps) {
+      <button class="dc-btn-primary stepper__nav-next" (click)="nextStep()" type="button">
+        Próximo ›
+      </button>
+    } @else {
+      <button class="dc-btn-primary stepper__nav-next stepper__nav-next--finish" type="button">
+        Finalizar e Emitir
+      </button>
+    }
+  </div>
+
+</div>

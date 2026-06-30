@@ -1,0 +1,86 @@
+<div class="os">
+
+  <div class="os__header">
+    <div>
+      <h1 class="os__title">Ordens de Serviço e Procedimentos</h1>
+      <p class="os__subtitle">Gere a Ordem de Serviço de SST (NR-01) por cargo/atividade, com riscos, EPIs e treinamentos vinculados.</p>
+    </div>
+  </div>
+
+  <div class="os__two-col">
+
+    <!-- Dados da OS -->
+    <div class="os__form-card">
+      <h3 class="os__form-title">Dados da Ordem de Serviço</h3>
+      <div class="os__fields">
+        <div class="os__field">
+          <div class="os__field-label">EMPRESA</div>
+          <div class="os__field-val">{{ empresa }}</div>
+        </div>
+        <div class="os__field">
+          <div class="os__field-label">UNIDADE / SETOR</div>
+          <div class="os__field-val">{{ unidade }}</div>
+        </div>
+        <div class="os__field">
+          <div class="os__field-label">CARGO</div>
+          <div class="os__field-val">{{ cargo }}</div>
+        </div>
+        <div class="os__field">
+          <div class="os__field-label">CBO</div>
+          <div class="os__field-val">{{ cbo }}</div>
+        </div>
+        <div class="os__field os__field--full">
+          <div class="os__field-label">ATIVIDADE</div>
+          <div class="os__field-val">{{ atividade }}</div>
+        </div>
+      </div>
+
+      <div class="os__badge-section">
+        <div class="os__badge-label">RISCOS OCUPACIONAIS</div>
+        <div class="os__badge-row">
+          @for (r of riscos; track r) {
+            <span class="os__badge os__badge--risco">{{ r }}</span>
+          }
+        </div>
+      </div>
+
+      <div class="os__badge-section">
+        <div class="os__badge-label">EPIs / EPCs OBRIGATÓRIOS</div>
+        <div class="os__badge-row">
+          @for (e of epis; track e) {
+            <span class="os__badge os__badge--epi">{{ e }}</span>
+          }
+        </div>
+      </div>
+
+      <div class="os__badge-section">
+        <div class="os__badge-label">TREINAMENTOS EXIGIDOS</div>
+        <div class="os__badge-row">
+          @for (t of treinos; track t) {
+            <span class="os__badge os__badge--treino">{{ t }}</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Right panel -->
+    <div class="os__right">
+      <div class="os__ciencia-card">
+        <h3 class="os__form-title">Ciência do Trabalhador</h3>
+        <p class="os__ciencia-text">Declaro ter recebido as instruções sobre os riscos, medidas de controle, EPIs e procedimentos seguros referentes à minha função, conforme NR-01.</p>
+        <div class="os__signature">Assinatura / evidência — João da Silva · 18/06/2026</div>
+      </div>
+
+      <button class="dc-btn-primary os__btn-full">Gerar Ordem de Serviço</button>
+
+      <div class="os__btn-row">
+        <button class="dc-btn-outline os__btn-half">Word / PDF</button>
+        <button class="dc-btn-outline os__btn-half">Upload assinada</button>
+      </div>
+
+      <div class="os__disclaimer">MINUTA TÉCNICA PARA REVISÃO E APROVAÇÃO HUMANA</div>
+    </div>
+
+  </div>
+
+</div>

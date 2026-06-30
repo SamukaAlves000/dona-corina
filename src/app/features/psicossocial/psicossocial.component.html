@@ -1,0 +1,119 @@
+<div class="psicossocial">
+
+  <!-- Header -->
+  <div class="psicossocial__header">
+    <div>
+      <h1 class="psicossocial__title">Avaliação de Riscos Psicossociais</h1>
+      <p class="psicossocial__subtitle">
+        Identificação e avaliação de fatores de risco psicossocial e plano de ação integrado ao PGR —
+        metodologia técnica aceita, conforme NR-01 / GRO e atualização regulatória vigente.
+      </p>
+    </div>
+    <div class="psicossocial__header-btns">
+      <button class="dc-btn-outline">Exportar Word</button>
+      <button class="dc-btn-primary">Gerar Relatório Técnico (PDF)</button>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="psicossocial__tabs">
+    @for (t of psiTabs; track t) {
+      <button
+        class="psicossocial__tab"
+        [class.psicossocial__tab--active]="activeTab() === t"
+        (click)="activeTab.set(t)"
+      >{{ t }}</button>
+    }
+  </div>
+
+  @if (activeTab() === 'Avaliação') {
+
+    <!-- 5 context selects -->
+    <div class="psicossocial__ctx-selects">
+      <div class="psicossocial__field">
+        <div class="psicossocial__field-label">EMPRESA</div>
+        <select class="psicossocial__select"><option>Itaús Fertilizantes S.A.</option><option>Metalúrgica X Ltda.</option></select>
+      </div>
+      <div class="psicossocial__field">
+        <div class="psicossocial__field-label">UNIDADE</div>
+        <select class="psicossocial__select"><option>Unidade Industrial I</option><option>Centro de Distribuição</option></select>
+      </div>
+      <div class="psicossocial__field">
+        <div class="psicossocial__field-label">SETOR</div>
+        <select class="psicossocial__select"><option>Produção</option><option>Logística</option><option>Administrativo</option></select>
+      </div>
+      <div class="psicossocial__field">
+        <div class="psicossocial__field-label">CARGO / FUNÇÃO</div>
+        <select class="psicossocial__select"><option>Operador de Produção</option><option>Analista</option></select>
+      </div>
+      <div class="psicossocial__field">
+        <div class="psicossocial__field-label">GHE</div>
+        <select class="psicossocial__select"><option>GHE 04 — Produção</option><option>GHE 07 — Logística</option></select>
+      </div>
+    </div>
+
+    <!-- KPI row -->
+    <div class="psicossocial__kpis">
+      @for (k of kpis; track k.label) {
+        <div class="psicossocial__kpi-card" [style.border-left-color]="k.color">
+          <div class="psicossocial__kpi-label">{{ k.label }}</div>
+          <div class="psicossocial__kpi-value">{{ k.value }}</div>
+        </div>
+      }
+    </div>
+
+    <!-- 2-col: Fatores table + Risk Matrix -->
+    <div class="psicossocial__two-col">
+
+      <!-- Fatores Psicossociais -->
+      <div class="psicossocial__fatores-card">
+        <div class="psicossocial__card-title">Identificação dos Fatores Psicossociais</div>
+        <div class="psicossocial__card-sub">Categorias avaliadas por questionário validado · severidade × probabilidade.</div>
+
+        <div class="psicossocial__fatores-thead">
+          <div>FATOR</div><div>SEVER.</div><div>PROBAB.</div><div>NÍVEL</div>
+        </div>
+        @for (f of fatores; track f.id) {
+          <div class="psicossocial__fatores-row">
+            <div class="psicossocial__fatores-nome">{{ f.nome }}</div>
+            <div class="psicossocial__fatores-cell">{{ f.sev }}</div>
+            <div class="psicossocial__fatores-cell">{{ f.prob }}</div>
+            <div><span [style]="f.nivelStyle">{{ f.nivel }}</span></div>
+          </div>
+        }
+      </div>
+
+      <!-- 5x5 Risk Matrix -->
+      <div class="psicossocial__matrix-card">
+        <div class="psicossocial__card-title">Matriz de Risco Psicossocial</div>
+        <div class="psicossocial__card-sub">Probabilidade × Severidade (5×5).</div>
+
+        <div class="psicossocial__matrix-wrap">
+          <div class="psicossocial__matrix-ylabel">PROBABILIDADE →</div>
+          <div class="psicossocial__matrix-grid">
+            @for (row of matrix; track $index; let rowIdx = $index) {
+              @for (cell of row; track $index; let colIdx = $index) {
+                <div class="psicossocial__cell" [ngClass]="matrixCellClass(cell)">
+                  @if (isMarked(rowIdx, colIdx)) {
+                    <span class="psicossocial__cell-mark">{{ markedLabel(rowIdx, colIdx) }}</span>
+                  } @else {
+                    {{ cell }}
+                  }
+                </div>
+              }
+            }
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  }
+
+  @if (activeTab() !== 'Avaliação') {
+    <div class="psicossocial__tab-placeholder">
+      <p>{{ activeTab() }} — em desenvolvimento.</p>
+    </div>
+  }
+
+</div>

@@ -1,0 +1,86 @@
+<div class="dashboard">
+
+  <!-- Page Header -->
+  <div class="dashboard__header">
+    <div class="dashboard__header-left">
+      <h1 class="dashboard__title">Olá, Melqui!</h1>
+      <p class="dashboard__subtitle">Bem-vindo ao departamento técnico inteligente.</p>
+    </div>
+    <div class="dashboard__date">{{ todayLabel() }}</div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="dashboard__kpis">
+    @for (kpi of kpis(); track kpi.label) {
+      <a [routerLink]="kpi.route" class="dashboard__kpi-link">
+        <app-kpi-card
+          [label]="kpi.label"
+          [value]="kpi.value"
+          [color]="kpi.borderColor"
+          [delta]="kpi.delta"
+          [deltaColor]="kpi.deltaColor"
+        />
+      </a>
+    }
+  </div>
+
+  <!-- Two-column row -->
+  <div class="dashboard__two-col">
+
+    <!-- Recent Activities -->
+    <div class="dashboard__card">
+      <h2 class="dashboard__card-title">Atividades Recentes</h2>
+      @for (a of atividades(); track a.title) {
+        <div class="dashboard__activity">
+          <div class="dashboard__activity-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="#4f46e5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <path d="M14 2v6h6"/>
+            </svg>
+          </div>
+          <div class="dashboard__activity-info">
+            <div class="dashboard__activity-title">{{ a.title }}</div>
+            <div class="dashboard__activity-sub">{{ a.sub }}</div>
+          </div>
+          <div class="dashboard__activity-time">{{ a.time }}</div>
+        </div>
+      }
+    </div>
+
+    <!-- Important Alerts -->
+    <div class="dashboard__card dashboard__card--col">
+      <h2 class="dashboard__card-title">Alertas Importantes</h2>
+      @for (al of alertas(); track al.text) {
+        <div class="dashboard__alert">
+          <span class="dashboard__alert-dot" [style.background]="al.dotColor"></span>
+          <span class="dashboard__alert-text">{{ al.text }}</span>
+        </div>
+      }
+      <div class="dashboard__spacer"></div>
+      <button class="dashboard__alerts-btn dc-btn-outline" routerLink="/auditoria">
+        Ver todos os alertas
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Regulatory Agenda -->
+  <div class="dashboard__card dashboard__card--full">
+    <h2 class="dashboard__card-title">Agenda Regulatória</h2>
+    @for (ag of agenda(); track ag.text) {
+      <div class="dashboard__agenda-row">
+        <div class="dashboard__agenda-left">
+          <span class="dashboard__agenda-dot" [style.background]="ag.dotColor"></span>
+          <span class="dashboard__agenda-text">{{ ag.text }}</span>
+        </div>
+        <span
+          class="dashboard__agenda-badge"
+          [style.color]="ag.badgeColor"
+          [style.background]="ag.badgeBg"
+        >{{ ag.date }}</span>
+      </div>
+    }
+  </div>
+
+</div>

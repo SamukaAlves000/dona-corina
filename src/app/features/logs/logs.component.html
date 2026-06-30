@@ -1,0 +1,50 @@
+<div class="logs">
+
+  <div class="logs__header">
+    <div>
+      <h1 class="logs__title">Logs e Auditoria</h1>
+      <p class="logs__subtitle">Trilha append-only com hash, versionamento e rastreabilidade LGPD — quem, quando, o quê e a fonte.</p>
+    </div>
+    <button class="logs__export-btn">Exportar CSV</button>
+  </div>
+
+  <div class="logs__filters">
+    @for (f of filters; track f) {
+      <div class="logs__chip" [class.logs__chip--active]="activeFilter() === f" (click)="activeFilter.set(f)">{{ f }}</div>
+    }
+  </div>
+
+  <div class="logs__table-wrap">
+    <div class="logs__thead">
+      <div>DATA/HORA</div>
+      <div>ATOR</div>
+      <div>EVENTO</div>
+      <div>FONTE</div>
+      <div>HASH</div>
+    </div>
+    @for (l of filtered(); track l.id) {
+      <div class="logs__row">
+        <div class="logs__time">{{ l.time }}</div>
+        <div class="logs__actor">{{ l.actor }}</div>
+        <div class="logs__event-cell">
+          <span [style]="l.tagStyle">{{ l.kind }}</span>
+          <span class="logs__event-text">{{ l.event }}</span>
+        </div>
+        <div class="logs__source">{{ l.source }}</div>
+        <div class="logs__hash">{{ l.hash }}</div>
+      </div>
+    }
+    @if (filtered().length === 0) {
+      <div class="logs__empty">Nenhum registro encontrado.</div>
+    }
+  </div>
+
+  <div class="logs__footer">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2">
+      <circle cx="12" cy="12" r="9"></circle>
+      <path d="M8 12l2.5 2.5L16 9"></path>
+    </svg>
+    Integridade verificada · cadeia de hash encadeada (append-only) · retenção conforme política LGPD.
+  </div>
+
+</div>

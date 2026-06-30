@@ -1,0 +1,69 @@
+<div class="compl">
+
+  <div class="compl__header">
+    <div>
+      <h1 class="compl__title">Dashboard Compliance / ESG / GRC</h1>
+      <p class="compl__subtitle">Maturidade, conformidade normativa e gestão de riscos.</p>
+    </div>
+    <button class="dc-btn-primary">Gerar Relatório</button>
+  </div>
+
+  <!-- Maturidade cards -->
+  <div class="compl__mat-cards">
+    @for (m of matCards; track m.label) {
+      <div class="compl__mat-card">
+        <div class="compl__mat-label">{{ m.label }}</div>
+        <div class="compl__mat-pct">{{ m.pctText }}</div>
+        <div class="compl__mat-track">
+          <div class="compl__mat-fill" [style]="m.fillStyle"></div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Two-col content -->
+  <div class="compl__two-col">
+
+    <!-- Matriz de Conformidade -->
+    <div class="compl__panel">
+      <h3 class="compl__panel-title">Matriz de Conformidade</h3>
+      <div class="compl__matriz-head">
+        <div>REQUISITO</div>
+        <div>NORMA</div>
+        <div>STATUS</div>
+        <div>RISCO</div>
+      </div>
+      @for (mt of matriz; track mt.req) {
+        <div class="compl__matriz-row">
+          <div class="compl__mat-req">{{ mt.req }}</div>
+          <div class="compl__mat-norma">{{ mt.norma }}</div>
+          <div><span [style]="mt.statusStyle">{{ mt.status }}</span></div>
+          <div [style]="mt.riscoStyle">{{ mt.risco }}</div>
+        </div>
+      }
+    </div>
+
+    <!-- Painel ESG -->
+    <div class="compl__panel">
+      <h3 class="compl__panel-title">Painel ESG</h3>
+      @for (e of esgBars; track e.label) {
+        <div class="compl__esg-bar-wrap">
+          <div class="compl__esg-bar-top">
+            <span class="compl__esg-bar-label">{{ e.label }}</span>
+            <span class="compl__esg-bar-val">{{ e.val }}</span>
+          </div>
+          <div class="compl__esg-track">
+            <div class="compl__esg-fill" [style]="e.fillStyle"></div>
+          </div>
+        </div>
+      }
+      <div class="compl__esg-score">
+        <div class="compl__esg-score-label">Score ESG consolidado</div>
+        <div class="compl__esg-score-num">67 / 100</div>
+        <span class="compl__esg-score-badge">Nível Intermediário</span>
+      </div>
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,69 @@
+<div class="epi">
+
+  <div class="epi__header">
+    <div>
+      <h1 class="epi__title">Ficha de Entrega de EPI</h1>
+      <p class="epi__subtitle">Controle de entrega por trabalhador, com CA, data de troca, assinatura e registro como evidência.</p>
+    </div>
+  </div>
+
+  <div class="epi__two-col">
+
+    <!-- Form left -->
+    <div class="epi__form-card">
+      <h3 class="epi__form-title">Nova Entrega</h3>
+      <div class="epi__form-grid">
+        <div class="epi__field">
+          <div class="epi__field-label">TRABALHADOR</div>
+          <input class="epi__input" value="João da Silva" />
+        </div>
+        <div class="epi__field">
+          <div class="epi__field-label">CARGO / CBO</div>
+          <input class="epi__input" value="Soldador · 7243-15" />
+        </div>
+        <div class="epi__field">
+          <div class="epi__field-label">EPI</div>
+          <select class="epi__input">
+            <option>Protetor auricular</option>
+            <option>Máscara de solda</option>
+            <option>Luva de raspa</option>
+            <option>Avental de raspa</option>
+          </select>
+        </div>
+        <div class="epi__field">
+          <div class="epi__field-label">CA</div>
+          <input class="epi__input epi__input--bold" value="12345" />
+        </div>
+        <div class="epi__field">
+          <div class="epi__field-label">DATA DE ENTREGA</div>
+          <input class="epi__input" value="18/06/2026" />
+        </div>
+        <div class="epi__field">
+          <div class="epi__field-label">PRÓXIMA TROCA</div>
+          <input class="epi__input" value="18/12/2026" />
+        </div>
+      </div>
+      <div class="epi__signature-area">Assinatura do trabalhador / upload da ficha assinada</div>
+      <div class="epi__btn-row">
+        <button class="dc-btn-primary epi__btn">Gerar Ficha (PDF/Word)</button>
+        <button class="dc-btn-outline epi__btn">Upload assinada</button>
+      </div>
+    </div>
+
+    <!-- Entregas recentes -->
+    <div class="epi__recent-card">
+      <h3 class="epi__form-title">Entregas Recentes</h3>
+      @for (e of epiRows; track e.epi) {
+        <div class="epi__recent-row">
+          <div class="epi__recent-info">
+            <div class="epi__recent-name">{{ e.epi }}</div>
+            <div class="epi__recent-meta">CA {{ e.ca }} · {{ e.trab }} · {{ e.data }}</div>
+          </div>
+          <span [style]="e.statusStyle">{{ e.status }}</span>
+        </div>
+      }
+    </div>
+
+  </div>
+
+</div>

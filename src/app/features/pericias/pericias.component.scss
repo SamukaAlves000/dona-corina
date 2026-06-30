@@ -1,0 +1,119 @@
+.pericia {
+  padding: 28px;
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  &__title { font-size: 28px; font-weight: 800; color: var(--dc-text); margin: 0; }
+  &__subtitle { font-size: 15px; color: #6b7280; margin: 4px 0 0; }
+
+  &__two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+    margin-bottom: 20px;
+  }
+
+  &__form-card,
+  &__docs-card {
+    background: #fff;
+    border: 1px solid #e9ebf3;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(20,24,51,.05);
+  }
+
+  &__form-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: #1f2544;
+    margin: 0 0 16px;
+  }
+
+  &__form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  &__field { display: flex; flex-direction: column; gap: 5px; }
+
+  &__field-label {
+    font-size: 11.5px;
+    font-weight: 800;
+    color: #9aa0bd;
+    letter-spacing: .5px;
+  }
+
+  &__input {
+    padding: 9px 12px;
+    border: 1.5px solid #e6e8f2;
+    border-radius: 9px;
+    font-size: 13.5px;
+    font-family: var(--dc-font);
+    color: #1f2544;
+    background: #fff;
+    transition: border .15s;
+
+    &:focus { outline: none; border-color: var(--dc-primary); }
+  }
+
+  &__doc-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 0;
+    border-bottom: 1px solid #f1f2f8;
+
+    &:last-of-type { border-bottom: none; }
+  }
+
+  &__doc-name {
+    font-size: 13.5px;
+    color: #374151;
+    font-weight: 500;
+  }
+
+  &__add-doc-btn {
+    display: block;
+    width: 100%;
+    margin-top: 14px;
+    padding: 11px;
+    border: 1.5px dashed #c7cce0;
+    background: #fff;
+    color: var(--dc-primary);
+    border-radius: 11px;
+    font-weight: 700;
+    font-size: 13.5px;
+    cursor: pointer;
+    font-family: var(--dc-font);
+    text-align: center;
+
+    &:hover { background: #f3f4fb; }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  &__btn-parecer {
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: var(--dc-font);
+    border: 1.5px solid #4f46e5;
+    background: #eef0fe;
+    color: #4f46e5;
+    cursor: pointer;
+
+    &:hover { background: #ddd8fb; }
+  }
+}

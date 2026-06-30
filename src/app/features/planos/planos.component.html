@@ -1,0 +1,72 @@
+<div class="planos">
+
+  <!-- Header -->
+  <div class="planos__header">
+    <div class="planos__header-left">
+      <h1 class="planos__title">Plano de Ação Inteligente</h1>
+      <p class="planos__subtitle">Acompanhe e gerencie ações corretivas e preventivas (5W2H).</p>
+    </div>
+    <button class="dc-btn-primary planos__new-btn">+ Nova Ação</button>
+  </div>
+
+  <!-- KPI Row -->
+  <div class="planos__kpis">
+    @for (kpi of kpis; track kpi.label) {
+      <app-kpi-card
+        [label]="kpi.label"
+        [value]="kpi.value"
+        [color]="kpi.color">
+      </app-kpi-card>
+    }
+  </div>
+
+  <!-- Table -->
+  <div class="planos__table-card">
+
+    <div class="planos__table-head">
+      <div>AÇÃO</div>
+      <div>RESPONSÁVEL</div>
+      <div>PRAZO</div>
+      <div>EVIDÊNCIA</div>
+      <div>PRIORIDADE</div>
+      <div>RISCO / STATUS</div>
+      <div>PROGRESSO</div>
+    </div>
+
+    @for (row of rows; track row.num) {
+      <div class="planos__table-row">
+        <div class="planos__row-acao">{{ row.acao }}</div>
+        <div class="planos__row-resp">{{ row.resp }}</div>
+        <div class="planos__row-prazo">{{ row.prazo }}</div>
+        <div class="planos__row-evid">{{ row.evid }}</div>
+        <div>
+          <span [style]="row.prioStyle">{{ row.prio }}</span>
+        </div>
+        <div class="planos__row-risco-status">
+          <span [style]="row.riscoStyle">Risco {{ row.risco }}</span>
+          <span [style]="row.statusStyle">{{ row.status }}</span>
+        </div>
+        <div class="planos__row-progress">
+          <div class="planos__prog-track">
+            <div class="planos__prog-fill" [style]="row.fillStyle"></div>
+          </div>
+          <span class="planos__prog-text">{{ row.progText }}</span>
+        </div>
+      </div>
+    }
+
+  </div>
+
+  <!-- Corina AI Suggestion Banner -->
+  <div class="planos__ai-banner">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z"/>
+      <path d="M12 6v6l4 2"/>
+    </svg>
+    <div class="planos__ai-text">
+      <strong>Corina sugere 3 novas ações</strong> baseadas nas não conformidades identificadas nas últimas auditorias.
+    </div>
+    <button class="planos__ai-btn dc-btn-outline">Ver Sugestões</button>
+  </div>
+
+</div>

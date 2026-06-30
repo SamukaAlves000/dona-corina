@@ -1,0 +1,129 @@
+<div class="biblioteca">
+
+  <!-- Header -->
+  <div class="biblioteca__header">
+    <div class="biblioteca__header-text">
+      <h1 class="dc-page-title">Biblioteca de Templates</h1>
+      <p class="dc-page-subtitle">Gerencie templates inteligentes da MVN.</p>
+    </div>
+    <button class="dc-btn-primary">+ Novo Template</button>
+  </div>
+
+  <!-- Search -->
+  <input
+    class="dc-input biblioteca__search"
+    type="text"
+    placeholder="Buscar template…"
+    [value]="search()"
+    (input)="onSearch($event)"
+  />
+
+  <!-- Category Filter Tabs -->
+  <div class="biblioteca__filters">
+    @for (cat of categories; track cat) {
+      <button
+        class="dc-chip"
+        [class.active]="category() === cat"
+        (click)="setCategory(cat)"
+      >
+        {{ cat }}
+      </button>
+    }
+  </div>
+
+  <!-- Content area: grid + optional detail panel -->
+  <div class="biblioteca__content" [class.biblioteca__content--split]="activeTemplate()">
+
+    <!-- Template Grid -->
+    <div class="biblioteca__grid">
+      @if (filteredTemplates().length === 0) {
+        <div class="biblioteca__empty">
+          Nenhum template encontrado.
+        </div>
+      }
+      @for (tpl of filteredTemplates(); track tpl.id) {
+        <div
+          class="biblioteca__card dc-card"
+          [class.biblioteca__card--active]="selectedTemplate() === tpl.id"
+          (click)="selectTemplate(tpl.id)"
+        >
+          <div class="biblioteca__card-top">
+            <div class="biblioteca__card-icon" [style.background]="tpl.iconBg">
+              {{ tpl.icon }}
+            </div>
+            <span [class]="categoryBadgeClass(tpl.category)">{{ tpl.category }}</span>
+          </div>
+
+          <h3 class="biblioteca__card-name">{{ tpl.name }}</h3>
+          <p class="biblioteca__card-desc">{{ tpl.description }}</p>
+
+          <div class="biblioteca__card-meta">
+            <span class="biblioteca__card-fields">
+              <strong>{{ tpl.fieldCount }}</strong> {{ tpl.fieldLabel }}
+            </span>
+            <span class="biblioteca__card-version">{{ tpl.version }}</span>
+          </div>
+
+          <button
+            class="dc-btn-outline biblioteca__card-btn"
+            (click)="$event.stopPropagation(); selectTemplate(tpl.id)"
+          >
+            Usar Template
+          </button>
+        </div>
+      }
+    </div>
+
+    <!-- Detail Panel -->
+    @if (activeTemplate(); as tpl) {
+      <div class="biblioteca__detail dc-card">
+        <div class="biblioteca__detail-header">
+          <div class="biblioteca__detail-icon" [style.background]="tpl.iconBg">
+            {{ tpl.icon }}
+          </div>
+          <button class="biblioteca__detail-close" (click)="closePanel()">✕</button>
+        </div>
+
+        <h2 class="biblioteca__detail-name">{{ tpl.name }}</h2>
+        <span [class]="categoryBadgeClass(tpl.category)" style="margin-top:6px">{{ tpl.category }}</span>
+
+        <p class="biblioteca__detail-desc">{{ tpl.description }}</p>
+
+        <div class="biblioteca__detail-meta">
+          <div class="biblioteca__detail-meta-item">
+            <span class="dc-field-label">Versão</span>
+            <span class="dc-field-readonly">{{ tpl.version }}</span>
+          </div>
+          <div class="biblioteca__detail-meta-item">
+            <span class="dc-field-label">Atualizado</span>
+            <span class="dc-field-readonly">{{ tpl.updatedAt }}</span>
+          </div>
+          <div class="biblioteca__detail-meta-item">
+            <span class="dc-field-label">Total de Campos</span>
+            <span class="dc-field-readonly">{{ tpl.fieldCount }} {{ tpl.fieldLabel }}</span>
+          </div>
+        </div>
+
+        <div class="biblioteca__detail-fields">
+          <p class="dc-section-label" style="margin-bottom:10px">Campos do Template</p>
+          @for (field of tpl.fields; track field) {
+            <div class="biblioteca__detail-field-item">
+              <span class="biblioteca__detail-field-dot"></span>
+              {{ field }}
+            </div>
+          }
+          @if (tpl.fieldCount > tpl.fields.length) {
+            <p class="biblioteca__detail-more">
+              + {{ tpl.fieldCount - tpl.fields.length }} campos adicionais…
+            </p>
+          }
+        </div>
+
+        <button class="dc-btn-primary biblioteca__detail-action">
+          Usar este Template
+        </button>
+      </div>
+    }
+
+  </div>
+</div>

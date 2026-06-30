@@ -1,0 +1,194 @@
+<div class="central">
+
+  <!-- ══════════════════ 2-column grid ══════════════════ -->
+  <div class="central__grid">
+
+    <!-- ── LEFT COLUMN ───────────────────────────────────── -->
+    <div class="central__left">
+
+      <!-- Header -->
+      <h1 class="central__title">Como posso ajudar você hoje?</h1>
+      <p class="central__subtitle">Escolha uma das ações abaixo ou converse comigo.</p>
+
+      <!-- Action shortcuts grid -->
+      <div class="central__actions">
+        @for (ac of actions; track ac.title) {
+          <button class="central__action-card" (click)="sendAction(ac.title)" type="button">
+            <div class="central__action-icon" [innerHTML]="actionSvg(ac.icon)"></div>
+            <div class="central__action-text">
+              <div class="central__action-title">{{ ac.title }}</div>
+              <div class="central__action-sub">{{ ac.sub }}</div>
+            </div>
+          </button>
+        }
+      </div>
+
+      <!-- Chat area -->
+      <div class="central__chat dc-card">
+        <div class="central__chat-messages" #chatScroll>
+
+          @for (m of messages(); track $index) {
+            <div class="central__msg-row" [class.central__msg-row--user]="m.fromUser">
+              <div class="central__bubble" [class.central__bubble--user]="m.fromUser"
+                   [class.central__bubble--corina]="!m.fromUser">
+                {{ m.text }}
+              </div>
+            </div>
+          }
+
+          @if (typing()) {
+            <div class="central__typing">
+              <span class="central__dot central__dot--1"></span>
+              <span class="central__dot central__dot--2"></span>
+              <span class="central__dot central__dot--3"></span>
+            </div>
+          }
+
+        </div>
+
+        <!-- Input row -->
+        <div class="central__input-row">
+          <input
+            class="central__input"
+            type="text"
+            placeholder="Digite sua pergunta técnica…"
+            [value]="inputValue()"
+            (input)="onInput($any($event.target).value)"
+            (keydown)="onKey($event)"
+          />
+          <button class="central__send-btn" type="button" (click)="send()" [disabled]="typing()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /left -->
+
+
+    <!-- ── RIGHT COLUMN ──────────────────────────────────── -->
+    <div class="central__right">
+
+      <!-- Corina card -->
+      <div class="central__corina-card">
+        <div class="central__corina-avatar">
+          <div class="central__corina-avatar-inner">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+              <circle cx="50" cy="35" r="22" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.6)" stroke-width="2"/>
+              <ellipse cx="50" cy="80" rx="30" ry="18" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+              <circle cx="42" cy="32" r="3" fill="white"/>
+              <circle cx="58" cy="32" r="3" fill="white"/>
+              <path d="M43 42 Q50 48 57 42" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            </svg>
+          </div>
+        </div>
+        <div class="central__corina-name">DONA CORINA</div>
+        <div class="central__corina-role">Auditora Inteligente MVN</div>
+        <p class="central__corina-desc">
+          Integrada a todos os módulos — aprende a cada documento, cruza dados,
+          aponta inconsistências e propõe; você decide e assina.
+        </p>
+
+        <!-- Quick shortcuts inside corina card -->
+        <div class="central__corina-shortcuts">
+          @for (s of quickShortcuts; track s.label) {
+            <button class="central__corina-btn" type="button" (click)="sendAction(s.label)">
+              <span [innerHTML]="shortcutSvg(s.icon)"></span>
+              {{ s.label }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Conformidade card -->
+      <div class="central__conf dc-card">
+        <div class="central__conf-title">Indicadores de Conformidade</div>
+        @for (bar of confBars; track bar.label) {
+          <div class="central__conf-item">
+            <div class="central__conf-meta">
+              <span class="central__conf-label">{{ bar.label }}</span>
+              <span class="central__conf-pct">{{ bar.pct }}</span>
+            </div>
+            <div class="central__conf-track">
+              <div class="central__conf-fill"
+                   [style.width]="bar.pct"
+                   [style.background]="barColor(bar.value)">
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Alertas críticos -->
+      <div class="central__alerts dc-card">
+        <div class="central__alerts-title">Alertas Críticos</div>
+        @for (a of criticalAlerts; track a.text) {
+          <div class="central__alert-row">
+            <span class="central__alert-tag central__alert-tag--{{ a.tagClass }}">{{ a.tag }}</span>
+            <span class="central__alert-text">{{ a.text }}</span>
+          </div>
+        }
+      </div>
+
+    </div><!-- /right -->
+
+  </div><!-- /grid -->
+
+
+  <!-- ══════════════════ Module shortcuts ══════════════════ -->
+  <div class="central__section-label">ACESSO RÁPIDO A TODOS OS MÓDULOS</div>
+  <div class="central__shortcuts">
+    @for (s of moduleShortcuts; track s) {
+      <button class="central__shortcut-chip" type="button">{{ s }}</button>
+    }
+  </div>
+
+
+  <!-- ══════════════════ Bottom 3-col grid ══════════════════ -->
+  <div class="central__bottom-grid">
+
+    <!-- Pendências por Empresa -->
+    <div class="dc-card central__bottom-card">
+      <div class="central__bottom-title">Pendências por Empresa</div>
+      @for (p of pendencies; track p.empresa) {
+        <div class="central__pend-row">
+          <div class="central__pend-top">
+            <span class="central__pend-name">{{ p.empresa }}</span>
+            <span class="central__pend-badge">{{ p.qtd }}</span>
+          </div>
+          <div class="central__pend-det">{{ p.det }}</div>
+        </div>
+      }
+    </div>
+
+    <!-- Últimos Documentos Analisados -->
+    <div class="dc-card central__bottom-card">
+      <div class="central__bottom-title">Últimos Documentos Analisados</div>
+      @for (d of recentDocs; track d.doc) {
+        <div class="central__doc-row">
+          <div class="central__doc-name">{{ d.doc }}</div>
+          <div class="central__doc-meta">{{ d.meta }}</div>
+        </div>
+      }
+    </div>
+
+    <!-- Sugestões de Melhoria -->
+    <div class="dc-card central__bottom-card">
+      <div class="central__bottom-title">Sugestões de Melhoria</div>
+      @for (s of suggestions; track s) {
+        <div class="central__sug-row">
+          <svg class="central__sug-icon" width="15" height="15" viewBox="0 0 24 24" fill="none"
+               stroke="#4f46e5" stroke-width="2">
+            <path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/>
+          </svg>
+          <span class="central__sug-text">{{ s }}</span>
+        </div>
+      }
+    </div>
+
+  </div><!-- /bottom-grid -->
+
+</div>

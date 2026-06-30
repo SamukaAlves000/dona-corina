@@ -1,0 +1,54 @@
+<div class="proc">
+  <div class="proc__header">
+    <div>
+      <h1 class="dc-page-title">Procedimentos de Trabalho</h1>
+      <p class="dc-page-subtitle">POPs e instruções técnicas de SST</p>
+    </div>
+    <button class="dc-btn-primary">+ Novo Procedimento</button>
+  </div>
+
+  <div class="proc__filters dc-card">
+    <input
+      class="dc-input proc__search"
+      placeholder="Buscar procedimento, NR..."
+      [value]="search()"
+      (input)="onSearch($event)"
+    />
+    <div class="proc__cats">
+      @for (cat of categories; track cat) {
+        <button
+          class="dc-chip"
+          [class.active]="category() === cat"
+          (click)="category.set(cat)"
+        >{{ cat }}</button>
+      }
+    </div>
+  </div>
+
+  <div class="proc__grid">
+    @for (card of filteredCards(); track card.id) {
+      <div class="proc__card dc-card">
+        <div class="proc__card-top">
+          <span class="proc__id-badge">{{ card.id }}</span>
+          <span class="proc__status" [class]="statusClass(card.status)">{{ card.status }}</span>
+        </div>
+        <h3 class="proc__card-title">{{ card.titulo }}</h3>
+        <p class="proc__card-desc">{{ card.descricao }}</p>
+        <div class="proc__card-meta">
+          <span class="proc__norma-chip">{{ card.norma }}</span>
+          <span class="proc__cat-chip">{{ card.categoria }}</span>
+        </div>
+        <div class="proc__card-footer">
+          <div class="proc__footer-info">
+            <span class="proc__version">{{ card.versao }}</span>
+            <span class="proc__resp">{{ card.responsavel }}</span>
+          </div>
+          <button class="dc-btn-outline proc__ver-btn">Ver</button>
+        </div>
+      </div>
+    }
+    @if (filteredCards().length === 0) {
+      <div class="proc__empty">Nenhum procedimento encontrado.</div>
+    }
+  </div>
+</div>

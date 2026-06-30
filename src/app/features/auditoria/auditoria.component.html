@@ -1,0 +1,217 @@
+<div class="auditoria">
+
+  <!-- ── Header row ───────────────────────────────────────────────── -->
+  <div class="auditoria__header">
+    <div>
+      <h1 class="dc-page-title">Auditoria Inteligente</h1>
+      <p class="dc-page-subtitle">
+        Faça o upload e a Corina confronta o documento com as bases normativas aplicáveis.
+      </p>
+    </div>
+    <button class="dc-btn-primary auditoria__btn-nova">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      Nova Auditoria
+    </button>
+  </div>
+
+  <!-- ── Audit flow chips bar ─────────────────────────────────────── -->
+  <div class="auditoria__flow dc-card">
+    @for (step of flowSteps; track step.label) {
+      <div class="auditoria__flow-item">
+        <span
+          class="auditoria__flow-chip"
+          [class.auditoria__flow-chip--active]="step.active"
+          [class.auditoria__flow-chip--done]="step.done"
+        >
+          @if (step.done) {
+            <svg class="auditoria__flow-check" width="12" height="12" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2.8"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          }
+          {{ step.label }}
+        </span>
+        @if (step.arrow) {
+          <span class="auditoria__flow-arrow">›</span>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- ── Main 2-col layout ────────────────────────────────────────── -->
+  <div class="auditoria__body">
+
+    <!-- LEFT ──────────────────────────────────────────────────────── -->
+    <div class="auditoria__left">
+
+      <!-- Upload drop zone (when no doc) -->
+      @if (!hasDoc()) {
+        <label
+          class="auditoria__dropzone"
+          (dragover)="onDragOver($event)"
+          (drop)="onDropDoc($event)"
+        >
+          <input
+            type="file"
+            class="auditoria__file-input"
+            accept=".pdf,.docx,.doc"
+            (change)="onFileInput($event)"
+          />
+          <div class="auditoria__drop-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                 stroke="#4f46e5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <path d="M14 2v6h6"/>
+              <line x1="12" y1="11" x2="12" y2="17"/>
+              <polyline points="9 14 12 17 15 14"/>
+            </svg>
+          </div>
+          <p class="auditoria__drop-title">Arraste documentos para auditar</p>
+          <p class="auditoria__drop-sub">Suporta PDF / DOCX · Clique para selecionar</p>
+        </label>
+      }
+
+      <!-- Analysis results (when doc uploaded) -->
+      @if (hasDoc()) {
+        <div class="auditoria__results" [class.auditoria__results--analyzing]="isAnalyzing()">
+
+          <!-- Uploaded file info bar -->
+          <div class="auditoria__file-bar dc-card">
+            <div class="auditoria__file-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                   stroke="#dc2626" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <path d="M14 2v6h6"/>
+              </svg>
+            </div>
+            <div class="auditoria__file-info">
+              <span class="auditoria__file-name">PGR - Itaús 2026.pdf</span>
+              <span class="auditoria__file-meta">2.4 MB · PDF / DOCX</span>
+            </div>
+            <button class="auditoria__file-clear" (click)="clearDoc()" title="Remover">×</button>
+          </div>
+
+          <!-- Score donut -->
+          <div class="auditoria__score-panel dc-card">
+            <p class="auditoria__score-label">Score de Conformidade</p>
+            <div class="auditoria__donut-wrap">
+              <svg width="160" height="160" viewBox="0 0 150 150">
+                <!-- track -->
+                <circle cx="75" cy="75" r="62" fill="none"
+                        stroke="#eef0f8" stroke-width="14"/>
+                <!-- fill -->
+                <circle cx="75" cy="75" r="62" fill="none"
+                        [attr.stroke]="scoreColor()"
+                        stroke-width="14"
+                        stroke-linecap="round"
+                        [attr.stroke-dasharray]="donutDash()"
+                        transform="rotate(-90 75 75)"/>
+              </svg>
+              <div class="auditoria__donut-center">
+                <span class="auditoria__donut-pct">{{ score() }}%</span>
+                <span class="auditoria__donut-tag" [style.color]="scoreColor()">
+                  {{ scoreLabel() }}
+                </span>
+              </div>
+            </div>
+            <p class="auditoria__donut-sub">conformidade geral</p>
+          </div>
+
+          <!-- Findings list -->
+          <div class="auditoria__findings dc-card">
+            <p class="auditoria__findings-title">Principais Achados</p>
+
+            @for (f of findings; track f.norma) {
+              <div class="auditoria__finding-row">
+                <span
+                  class="auditoria__crit-dot"
+                  [style.background]="critDotColor(f.criticidade)"
+                ></span>
+                <div class="auditoria__finding-body">
+                  <div class="auditoria__finding-header">
+                    <span
+                      class="auditoria__crit-badge"
+                      [class.auditoria__crit-badge--critico]="f.criticidade === 'critico'"
+                      [class.auditoria__crit-badge--atencao]="f.criticidade === 'atencao'"
+                      [class.auditoria__crit-badge--ok]="f.criticidade === 'ok'"
+                    >{{ critLabel(f.criticidade) }}</span>
+                    <span class="auditoria__finding-norma">{{ f.norma }}</span>
+                  </div>
+                  <p class="auditoria__finding-text">{{ f.texto }}</p>
+                </div>
+                <button
+                  class="auditoria__finding-btn"
+                  [class.auditoria__finding-btn--ok]="f.criticidade === 'ok'"
+                >{{ critBtnLabel(f.criticidade) }}</button>
+              </div>
+            }
+
+            <button class="dc-btn-primary auditoria__relatorio-btn" (click)="gerarRelatorio()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <path d="M14 2v6h6"/>
+              </svg>
+              Gerar Relatório
+            </button>
+          </div>
+
+        </div>
+      }
+
+    </div>
+
+    <!-- RIGHT (340px) ─────────────────────────────────────────────── -->
+    <aside class="auditoria__right">
+
+      <!-- Norma compliance bars -->
+      <div class="auditoria__normas dc-card">
+        <p class="auditoria__normas-title">Conformidade por Norma</p>
+        @for (n of normaBars; track n.label) {
+          <div class="auditoria__norma-row">
+            <span class="auditoria__norma-label">{{ n.label }}</span>
+            <div class="auditoria__norma-track">
+              <div
+                class="auditoria__norma-fill"
+                [style.width.%]="n.pct"
+                [style.background]="n.color"
+              ></div>
+            </div>
+            <span class="auditoria__norma-pct">{{ n.pct }}%</span>
+          </div>
+        }
+      </div>
+
+      <!-- Corina analysis card -->
+      <div class="auditoria__corina-card">
+        <div class="auditoria__corina-avatar">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+               stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4"/>
+            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+          </svg>
+        </div>
+        <p class="auditoria__corina-title">Análise da Corina</p>
+        <p class="auditoria__corina-text">
+          Corina identificou <strong>3 pontos críticos</strong> que requerem ação imediata.
+          O documento apresenta conformidade geral de <strong>{{ score() }}%</strong>
+          com as normas SST aplicáveis. Priorize NR-15 e PCMSO.
+        </p>
+        <button class="auditoria__corina-btn" (click)="verPlanoAcao()">
+          Ver Plano de Ação
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </button>
+      </div>
+
+    </aside>
+  </div>
+
+</div>

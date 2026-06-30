@@ -1,0 +1,277 @@
+<div class="cadastros">
+
+  <!-- ── Header ──────────────────────────────────────────────────────────── -->
+  <div class="cadastros__header">
+    <div class="cadastros__header-titles">
+      <h1 class="dc-page-title">Cadastros de Clientes</h1>
+      <p class="dc-page-subtitle">
+        Base operacional única (REGULARE) que alimenta PGR, LTCAT, PCMSO, eSocial,
+        higiene, ambiental e auditorias.
+      </p>
+    </div>
+    <div class="cadastros__header-actions">
+      <button class="dc-btn-primary cadastros__btn-novo">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5"  y1="12" x2="19" y2="12"></line>
+        </svg>
+        Novo Cliente
+      </button>
+      <button class="dc-btn-outline cadastros__btn-import">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Importar planilha
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Corina IA card ──────────────────────────────────────────────────── -->
+  <div class="cadastros__corina-card">
+    <div class="cadastros__corina-identity">
+      <div class="cadastros__corina-avatar">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="rgba(255,255,255,.95)">
+          <circle cx="12" cy="8" r="4"></circle>
+          <path d="M4 22c0-4.4 3.6-8 8-8s8 3.6 8 8z"></path>
+        </svg>
+      </div>
+      <div>
+        <div class="cadastros__corina-title">Cadastro Geral com a Corina IA</div>
+        <div class="cadastros__corina-subtitle">
+          Descreva o cliente em linguagem natural — a Corina preenche todos os
+          cadastros e propaga para as telas.
+        </div>
+      </div>
+    </div>
+
+    <textarea
+      class="cadastros__corina-textarea"
+      [placeholder]="corinaPlaceholder"
+      [value]="corinaPrompt()"
+      (input)="onCorinaPromptChange($any($event.target).value)"
+    ></textarea>
+
+    <div class="cadastros__corina-actions">
+      <button class="cadastros__btn-fill" (click)="fillWithCorina()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 3v4M3 5h4M6 17v4M4 19h4M13 3l2.5 6.5L22 12l-6.5 2.5L13 21l-2.5-6.5L4 12l6.5-2.5z"></path>
+        </svg>
+        Preencher com a Corina
+      </button>
+      @if (corinaBusy()) {
+        <span class="cadastros__corina-busy">Corina analisando…</span>
+      }
+      @if (corinaFilled()) {
+        <span class="cadastros__corina-clear" (click)="resetCorina()">Limpar</span>
+      }
+    </div>
+
+    <!-- Extracted data panel -->
+    @if (corinaFilled()) {
+      <div class="cadastros__corina-result">
+        <div class="cadastros__corina-result-header">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+               stroke="#16a34a" stroke-width="2.4">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M8 12l2.5 2.5L16 9"></path>
+          </svg>
+          <span>Dados extraídos pela Corina</span>
+        </div>
+
+        <div class="cadastros__corina-fields">
+          @for (item of corinaExtract; track item.campo) {
+            <div class="cadastros__corina-field">
+              <span class="cadastros__corina-field-key">{{ item.campo }}</span>
+              <span class="cadastros__corina-field-val">{{ item.valor }}</span>
+            </div>
+          }
+        </div>
+
+        <div class="dc-section-label" style="margin: 18px 0 9px;">
+          TELAS PREENCHIDAS AUTOMATICAMENTE (CLIQUE PARA ABRIR)
+        </div>
+        <div class="cadastros__corina-screens">
+          @for (s of corinaScreens; track s) {
+            <span class="dc-chip">{{ s }}</span>
+          }
+        </div>
+
+        <div class="cadastros__corina-disclaimer">
+          A Corina preenche minutas e cruza dados, mas não emite documento final
+          nem grava sem revisão e aprovação humana. Toda ação gera log LGPD.
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- ── Group pill tabs ─────────────────────────────────────────────────── -->
+  <div class="cadastros__tabs">
+    @for (g of groups; track g) {
+      <button
+        class="cadastros__tab"
+        [class.cadastros__tab--active]="activeGroup() === g"
+        (click)="setGroup(g)"
+      >{{ g }}</button>
+    }
+  </div>
+
+  <!-- ── Search + filter bar ─────────────────────────────────────────────── -->
+  <div class="cadastros__search-bar">
+    <div class="cadastros__search-wrap">
+      <svg class="cadastros__search-icon" width="16" height="16" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input
+        class="cadastros__search-input"
+        type="text"
+        placeholder="Buscar cliente, CNPJ, setor…"
+        [value]="searchQuery()"
+        (input)="onSearch($any($event.target).value)"
+      />
+    </div>
+    <select class="dc-select cadastros__filter-select">
+      <option value="">Todos os status</option>
+      <option value="Ativo">Ativo</option>
+      <option value="Em Implantação">Em Implantação</option>
+      <option value="Pendente">Pendente</option>
+    </select>
+    <select class="dc-select cadastros__filter-select">
+      <option value="">Todos os setores</option>
+      <option value="Construção Civil">Construção Civil</option>
+      <option value="Metalúrgica">Metalúrgica</option>
+      <option value="Logística">Logística</option>
+    </select>
+  </div>
+
+  <!-- ── New-client form card ────────────────────────────────────────────── -->
+  <div class="dc-card cadastros__form-card">
+    <div class="cadastros__form-card-header">
+      <div class="cadastros__form-card-title">Novo {{ activeGroup() }}</div>
+      <span class="dc-badge dc-badge--indigo">Novo cadastro</span>
+    </div>
+    <p class="cadastros__form-card-desc">
+      Preencha os dados do {{ activeGroup() | lowercase }} ou use a Corina IA acima.
+    </p>
+
+    <div class="cadastros__form-grid">
+      @for (f of cadFields; track f.label) {
+        <div [class.cadastros__form-field--full]="f.full" class="cadastros__form-field">
+          <label class="cadastros__form-label">
+            {{ f.label }}
+            @if (f.req) { <span class="cadastros__req-mark">*</span> }
+          </label>
+          <input class="dc-input" [placeholder]="f.ex" />
+        </div>
+      }
+    </div>
+
+    <div class="cadastros__form-actions">
+      <button class="dc-btn-primary">Salvar cadastro</button>
+      <button class="dc-btn-outline">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- ── Client table ────────────────────────────────────────────────────── -->
+  <div class="cadastros__table-header-row">
+    <span class="cadastros__table-section-title">
+      Registros · {{ activeGroup() }}
+    </span>
+    <span class="cadastros__table-count">
+      {{ filteredClients().length }} registros
+    </span>
+  </div>
+
+  <div class="cadastros__table">
+    <!-- Column headers -->
+    <div class="dc-table-header cadastros__table-cols">
+      <span>Cliente</span>
+      <span>CNPJ</span>
+      <span>Setor</span>
+      <span>Município / UF</span>
+      <span>Documentos</span>
+      <span>Status</span>
+      <span>Ações</span>
+    </div>
+
+    <!-- Rows -->
+    @for (client of filteredClients(); track client.cnpj) {
+      <div class="dc-table-row cadastros__table-cols">
+
+        <!-- Cliente -->
+        <div class="cadastros__cell cadastros__cell--name">
+          <span class="cadastros__avatar">
+            {{ client.name.charAt(0) }}
+          </span>
+          <span>{{ client.name }}</span>
+        </div>
+
+        <!-- CNPJ -->
+        <div class="cadastros__cell">
+          <span class="cadastros__mono">{{ client.cnpj }}</span>
+        </div>
+
+        <!-- Setor -->
+        <div class="cadastros__cell">{{ client.setor }}</div>
+
+        <!-- Município / UF -->
+        <div class="cadastros__cell">{{ client.municipio }}</div>
+
+        <!-- Documentos -->
+        <div class="cadastros__cell">
+          <span class="dc-badge dc-badge--indigo">{{ client.docs }} docs</span>
+        </div>
+
+        <!-- Status -->
+        <div class="cadastros__cell">
+          <span class="dc-badge" [ngClass]="statusVariant(client.status)">
+            {{ client.status }}
+          </span>
+        </div>
+
+        <!-- Ações -->
+        <div class="cadastros__cell cadastros__cell--actions">
+          <button class="cadastros__action-btn" title="Editar">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+          </button>
+          <button class="cadastros__action-btn" title="Ver detalhes">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    }
+  </div>
+
+  <!-- ── Footer note ─────────────────────────────────────────────────────── -->
+  <div class="cadastros__footer-note">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+         stroke="#16a34a" stroke-width="2.2">
+      <circle cx="12" cy="12" r="9"></circle>
+      <path d="M8 12l2.5 2.5L16 9"></path>
+    </svg>
+    Cadastros segregados por cliente · cada alteração gera log LGPD (autor, data,
+    hash) e fica disponível para todos os módulos da Dona Corina.
+  </div>
+
+</div>

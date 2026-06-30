@@ -1,0 +1,167 @@
+.compl {
+  padding: 28px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    gap: 12px;
+  }
+
+  &__title {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--dc-text);
+    margin: 0;
+  }
+
+  &__subtitle {
+    font-size: 15px;
+    color: #6b7280;
+    margin: 4px 0 0;
+  }
+
+  // ── Maturidade cards ─────────────────────────────────────────────────────────
+  &__mat-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 22px;
+
+    @media (max-width: 1100px) { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  &__mat-card {
+    background: #fff;
+    border: 1px solid #e9ebf3;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(20,24,51,.05);
+  }
+
+  &__mat-label {
+    font-size: 13px;
+    color: #9aa0bd;
+    font-weight: 700;
+  }
+
+  &__mat-pct {
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--dc-text);
+    margin: 4px 0 10px;
+  }
+
+  &__mat-track {
+    height: 8px;
+    background: #eef0f8;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  &__mat-fill { height: 100%; border-radius: 999px; }
+
+  // ── Two-column layout ────────────────────────────────────────────────────────
+  &__two-col {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 20px;
+
+    @media (max-width: 1000px) { grid-template-columns: 1fr; }
+  }
+
+  &__panel {
+    background: #fff;
+    border: 1px solid #e9ebf3;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(20,24,51,.05);
+  }
+
+  &__panel-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--dc-text);
+    margin: 0 0 14px;
+  }
+
+  // ── Matriz ───────────────────────────────────────────────────────────────────
+  &__matriz-head,
+  &__matriz-row {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr 1fr 1fr;
+    align-items: center;
+  }
+
+  &__matriz-head {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eef0f6;
+    font-size: 11.5px;
+    font-weight: 800;
+    color: #9aa0bd;
+    letter-spacing: .5px;
+  }
+
+  &__matriz-row {
+    padding: 13px 0;
+    border-bottom: 1px solid #f4f5fa;
+
+    &:last-child { border-bottom: none; }
+  }
+
+  &__mat-req   { font-size: 13.5px; font-weight: 600; }
+  &__mat-norma { font-size: 13px; color: #6b7280; }
+
+  // ── ESG bars ─────────────────────────────────────────────────────────────────
+  &__esg-bar-wrap { margin-bottom: 18px; }
+
+  &__esg-bar-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  &__esg-bar-label { font-size: 13.5px; font-weight: 700; }
+  &__esg-bar-val   { font-size: 14px; font-weight: 800; }
+
+  &__esg-track {
+    height: 10px;
+    background: #eef0f8;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  &__esg-fill { height: 100%; border-radius: 999px; }
+
+  // ── ESG score ────────────────────────────────────────────────────────────────
+  &__esg-score {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid #f1f2f8;
+    text-align: center;
+  }
+
+  &__esg-score-label {
+    font-size: 12.5px;
+    color: #9aa0bd;
+    font-weight: 700;
+  }
+
+  &__esg-score-num {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--dc-text);
+    margin: 4px 0;
+  }
+
+  &__esg-score-badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 800;
+    color: #b45309;
+    background: #fef3c7;
+    padding: 5px 14px;
+    border-radius: 999px;
+  }
+}

@@ -1,0 +1,53 @@
+<div class="base">
+
+  <div class="base__header">
+    <div>
+      <h1 class="base__title">Base de Conhecimento MVN</h1>
+      <p class="base__subtitle">Gerencie documentos, normas e conhecimentos para treinar a Corina.</p>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="base__tabs">
+    @for (t of tabs; track t) {
+      <button [style]="tabStyle(t)" (click)="activeTab.set(t)">{{ t }}</button>
+    }
+  </div>
+
+  <!-- 2-col: categories sidebar + normas list -->
+  <div class="base__two-col">
+
+    <!-- Categories -->
+    <div class="base__cats-card">
+      <div class="base__section-title">Categorias</div>
+      @for (c of cats; track c.name) {
+        <div [style]="catStyle(c.name)" (click)="activeCat.set(c.name)">
+          <span class="base__cat-name">{{ c.name }}</span>
+          <span [style]="countStyle(c.name)">{{ c.count }}</span>
+        </div>
+      }
+    </div>
+
+    <!-- Normas list -->
+    <div class="base__normas-card">
+      <div class="base__section-title">Normas Regulamentadoras</div>
+      @for (n of normas; track n.title) {
+        <div class="base__norma-row">
+          <div>
+            <div class="base__norma-title">{{ n.title }}</div>
+            <div class="base__norma-date">Atualizado em {{ n.date }}</div>
+          </div>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M8 12l2.5 2.5L16 9"/>
+          </svg>
+        </div>
+      }
+      <div class="base__normas-footer">
+        <button class="dc-btn-primary">Treinar Corina com esta Base</button>
+      </div>
+    </div>
+
+  </div>
+
+</div>

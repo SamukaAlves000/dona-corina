@@ -1,0 +1,365 @@
+<div class="higiene">
+
+  <!-- ===== HEADER ===== -->
+  <div class="higiene__header">
+    <div class="higiene__header-text">
+      <h1 class="higiene__title">Higiene Ocupacional Inteligente</h1>
+      <p class="higiene__subtitle">
+        Avaliações ambientais, inventário de agentes, biblioteca técnica e interpretação automática
+        (NHO · NR · ACGIH · Previdenciário).
+      </p>
+    </div>
+    <button class="dc-btn-primary higiene__btn-nova">
+      <span class="higiene__btn-icon">+</span> Nova Medição
+    </button>
+  </div>
+
+  <!-- ===== TABS ===== -->
+  <div class="higiene__tabs">
+    @for (t of tabs; track t) {
+      <button
+        class="higiene__tab"
+        [class.higiene__tab--active]="tab() === t"
+        (click)="setTab(t)"
+      >{{ t }}</button>
+    }
+  </div>
+
+  <!-- ===== TAB: AVALIAÇÃO ===== -->
+  @if (tab() === 'Avaliação') {
+    <div class="higiene__aval-wrap">
+
+      <!-- 3 selects row -->
+      <div class="higiene__top-selects">
+        <div class="higiene__field">
+          <label class="higiene__label">METODOLOGIA</label>
+          <select class="dc-select">
+            <option>NHO-01 · Ruído</option>
+            <option>NHO-06 · Calor</option>
+            <option>NHO-09 · Vibração</option>
+          </select>
+        </div>
+        <div class="higiene__field">
+          <label class="higiene__label">GHE</label>
+          <select class="dc-select">
+            <option>01 - Soldagem</option>
+            <option>02 - Caldeiraria</option>
+            <option>03 - Expedição</option>
+          </select>
+        </div>
+        <div class="higiene__field">
+          <label class="higiene__label">AGENTE</label>
+          <select class="dc-select" [value]="agentType()" (change)="setAgent($event)">
+            <option>Ruído</option>
+            <option>Calor</option>
+            <option>Sílica</option>
+          </select>
+        </div>
+      </div>
+
+    <div class="higiene__aval">
+
+      <!-- LEFT: Form card -->
+      <div class="dc-card higiene__form-card">
+        <h2 class="higiene__card-title">Dados da Medição</h2>
+
+        <div class="higiene__field-row">
+          <div class="higiene__field">
+            <label class="higiene__label">COLABORADOR</label>
+            <input
+              class="dc-input"
+              type="text"
+              [value]="colaborador()"
+              (input)="setColaborador($event)"
+              placeholder="Nome do colaborador"
+            />
+          </div>
+          <div class="higiene__field">
+            <label class="higiene__label">FUNÇÃO</label>
+            <input
+              class="dc-input"
+              type="text"
+              [value]="funcao()"
+              (input)="setFuncao($event)"
+              placeholder="Função / cargo"
+            />
+          </div>
+        </div>
+
+        <div class="higiene__field-row">
+          <div class="higiene__field">
+            <label class="higiene__label">DURAÇÃO (h)</label>
+            <input
+              class="dc-input"
+              type="number"
+              [value]="duracao()"
+              (input)="setDuracao($event)"
+              placeholder="8"
+            />
+          </div>
+          <div class="higiene__field">
+            <label class="higiene__label">NÍVEL MEDIDO</label>
+            <div class="higiene__input-unit">
+              <input
+                class="dc-input higiene__input-unit__input"
+                type="number"
+                [value]="nivelMedido()"
+                (input)="setNivel($event)"
+                placeholder="87"
+              />
+              <span class="higiene__input-unit__tag">{{ unitLabel() }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="higiene__field">
+          <label class="higiene__label">NR REFERÊNCIA</label>
+          <input
+            class="dc-input higiene__input--readonly"
+            type="text"
+            [value]="nrReferencia()"
+            readonly
+          />
+        </div>
+
+        <div class="higiene__form-actions">
+          <button class="dc-btn-primary" (click)="analisar()">Analisar com Corina</button>
+          <button class="dc-btn-outline">Salvar Medição</button>
+        </div>
+      </div>
+
+      <!-- RIGHT: AI Analysis card -->
+      <div class="higiene__analysis-card">
+        <div class="higiene__analysis-header">
+          <div class="higiene__analysis-header__icon">🔬</div>
+          <div>
+            <div class="higiene__analysis-header__label">Corina AI</div>
+            <div class="higiene__analysis-header__title">Análise de Higiene Ocupacional</div>
+          </div>
+        </div>
+
+        @if (hasAnalysis()) {
+          <div class="higiene__analysis-body">
+            <!-- Summary row -->
+            <div class="higiene__analysis-summary">
+              <div class="higiene__analysis-kv">
+                <span class="higiene__analysis-kv__key">Agente</span>
+                <span class="higiene__analysis-kv__val">{{ agentType() }}</span>
+              </div>
+              <div class="higiene__analysis-kv">
+                <span class="higiene__analysis-kv__key">Nível</span>
+                <span class="higiene__analysis-kv__val">{{ nivelMedido() }} {{ unitLabel() }}</span>
+              </div>
+              <div class="higiene__analysis-kv">
+                <span class="higiene__analysis-kv__key">Limite {{ nrReferencia().split('—')[0].trim() }}</span>
+                <span class="higiene__analysis-kv__val">{{ limitValue() }} {{ unitLabel() }}</span>
+              </div>
+            </div>
+
+            <!-- Status badge -->
+            <div class="higiene__analysis-status">
+              @if (isAboveLimit()) {
+                <span class="dc-badge dc-badge--danger">ACIMA DO LIMITE</span>
+              } @else {
+                <span class="dc-badge dc-badge--success">DENTRO DO LIMITE</span>
+              }
+            </div>
+
+            <!-- Bar comparison -->
+            <div class="higiene__bars">
+              <div class="higiene__bar-row">
+                <span class="higiene__bar-label">Nível medido</span>
+                <div class="higiene__bar-track">
+                  <div
+                    class="higiene__bar-fill"
+                    [class.higiene__bar-fill--danger]="isAboveLimit()"
+                    [style.width.%]="barMeasuredPct()"
+                  ></div>
+                </div>
+                <span class="higiene__bar-value">{{ nivelMedido() }} {{ unitLabel() }}</span>
+              </div>
+              <div class="higiene__bar-row">
+                <span class="higiene__bar-label">Limite normativo</span>
+                <div class="higiene__bar-track">
+                  <div
+                    class="higiene__bar-fill higiene__bar-fill--neutral"
+                    [style.width.%]="barLimitPct()"
+                  ></div>
+                </div>
+                <span class="higiene__bar-value">{{ limitValue() }} {{ unitLabel() }}</span>
+              </div>
+            </div>
+
+            <!-- Corina recommendation -->
+            <div class="higiene__recommendation">
+              <div class="higiene__recommendation__header">
+                <span class="higiene__recommendation__dot"></span>
+                Recomendação da Corina
+              </div>
+              @if (isAboveLimit()) {
+                <p class="higiene__recommendation__text">
+                  O nível de <strong>{{ agentType() }}</strong> medido ({{ nivelMedido() }} {{ unitLabel() }}) supera
+                  o limite estabelecido pela {{ nrReferencia().split('—')[0].trim() }}
+                  ({{ limitValue() }} {{ unitLabel() }}). São necessárias medidas imediatas de controle de engenharia
+                  e administrativas, além do fornecimento de EPI adequado com CA vigente.
+                </p>
+              } @else {
+                <p class="higiene__recommendation__text">
+                  O nível de <strong>{{ agentType() }}</strong> medido ({{ nivelMedido() }} {{ unitLabel() }}) está
+                  dentro do limite estabelecido pela {{ nrReferencia().split('—')[0].trim() }}
+                  ({{ limitValue() }} {{ unitLabel() }}). Manter monitoramento periódico e registros atualizados.
+                </p>
+              }
+            </div>
+
+            <!-- Actions checklist -->
+            <div class="higiene__actions-list">
+              <div class="higiene__actions-list__title">Plano de Ação</div>
+              @for (acao of acoes(); track $index) {
+                <div
+                  class="higiene__action-item"
+                  [class.higiene__action-item--done]="acao.done"
+                  (click)="toggleAcao($index)"
+                >
+                  <div class="higiene__action-item__check">
+                    @if (acao.done) { ✓ }
+                  </div>
+                  <span class="higiene__action-item__label">{{ acao.label }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        } @else {
+          <div class="higiene__analysis-empty">
+            <p>Preencha os dados da medição e clique em <strong>Analisar com Corina</strong> para obter a interpretação automática.</p>
+          </div>
+        }
+      </div>
+
+    </div><!-- end higiene__aval -->
+
+    <!-- Interpretation table -->
+    <div class="dc-card higiene__interp-card">
+      <div class="higiene__interp-title">Interpretação Inteligente — Confronto com Limites de Referência</div>
+      <div class="higiene__interp-sub">A Corina compara o resultado com NR-15, ACGIH, NHO e critérios previdenciários e propõe o enquadramento.</div>
+      <div class="higiene__interp-thead">
+        <div>REFERÊNCIA</div><div>LIMITE</div><div>RESULTADO</div><div>ENQUADRAMENTO</div>
+      </div>
+      <div class="higiene__interp-row">
+        <div class="higiene__interp-ref">NR-15</div>
+        <div class="higiene__interp-cell">85 dB(A)/8h</div>
+        <div class="higiene__interp-cell-bold">87 dB(A)</div>
+        <div><span style="font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;background:#fee2e2;color:#b91c1c">Insalubre (grau médio)</span></div>
+      </div>
+      <div class="higiene__interp-row">
+        <div class="higiene__interp-ref">ACGIH TLV-TWA</div>
+        <div class="higiene__interp-cell">85 dB(A)</div>
+        <div class="higiene__interp-cell-bold">87 dB(A)</div>
+        <div><span style="font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;background:#fee2e2;color:#b91c1c">Acima do TLV</span></div>
+      </div>
+      <div class="higiene__interp-row">
+        <div class="higiene__interp-ref">NHO-01</div>
+        <div class="higiene__interp-cell">80 dB(A)</div>
+        <div class="higiene__interp-cell-bold">87 dB(A)</div>
+        <div><span style="font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;background:#fee2e2;color:#b91c1c">Acima do limite</span></div>
+      </div>
+      <div class="higiene__interp-row higiene__interp-row--last">
+        <div class="higiene__interp-ref">Previdenciário</div>
+        <div class="higiene__interp-cell">90 dB(A)</div>
+        <div class="higiene__interp-cell-bold">87 dB(A)</div>
+        <div><span style="font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;background:#f0fdf4;color:#166534">Não enquadra</span></div>
+      </div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="higiene__bottom-btns">
+      <button class="dc-btn-primary">Gerar Laudo de Higiene</button>
+      <button class="dc-btn-outline">Caracterizar LTCAT / PPP / Aposent. Especial</button>
+      <button class="dc-btn-outline">Vincular ao LTCAT</button>
+      <button class="dc-btn-outline">Adicionar ao PGR</button>
+    </div>
+
+    </div><!-- end higiene__aval-wrap -->
+  }
+
+  <!-- ===== TAB: INVENTÁRIO ===== -->
+  @if (tab() === 'Inventário') {
+    <div class="dc-card higiene__inv-card">
+      <div class="higiene__inv-card__top">
+        <h2 class="higiene__card-title">Inventário de Medições</h2>
+        <p class="higiene__card-sub">Histórico de avaliações quantitativas registradas</p>
+      </div>
+      <div class="higiene__table">
+        <div class="dc-table-header higiene__table-header">
+          <div>DATA</div>
+          <div>AGENTE</div>
+          <div>COLABORADOR</div>
+          <div>NÍVEL</div>
+          <div>NR</div>
+          <div>STATUS</div>
+        </div>
+        @for (row of medicoes(); track $index) {
+          <div class="dc-table-row higiene__table-row">
+            <div>{{ row.date }}</div>
+            <div class="higiene__table-row__agente">{{ row.agente }}</div>
+            <div>{{ row.colaborador }}</div>
+            <div class="higiene__table-row__nivel">{{ row.nivel }}</div>
+            <div class="higiene__table-row__nr">{{ row.nr }}</div>
+            <div>
+              <span
+                class="dc-badge"
+                [class.dc-badge--danger]="row.statusClass === 'badge--danger'"
+                [class.dc-badge--success]="row.statusClass === 'badge--success'"
+                [class.dc-badge--warning]="row.statusClass === 'badge--warning'"
+              >{{ row.status }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- ===== TAB: BIBLIOTECA TÉCNICA ===== -->
+  @if (tab() === 'Biblioteca Técnica') {
+    <div class="higiene__bib-grid">
+      @for (doc of bibDocs(); track $index) {
+        <div class="dc-card higiene__bib-card">
+          <h3 class="higiene__bib-card__title">{{ doc.title }}</h3>
+          <p class="higiene__bib-card__sub">{{ doc.subtitle }}</p>
+          <div class="higiene__chip-wrap">
+            @for (chip of doc.chips; track $index) {
+              <span class="dc-chip">{{ chip }}</span>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- ===== TAB: LABORATÓRIOS ===== -->
+  @if (tab() === 'Laboratórios') {
+    <div class="higiene__lab-grid">
+      @for (lab of labCards(); track $index) {
+        <div class="dc-card higiene__lab-card">
+          <div class="higiene__lab-card__top">
+            <span class="higiene__lab-card__nome">{{ lab.nome }}</span>
+            <span
+              class="dc-badge"
+              [class.dc-badge--success]="lab.statusClass === 'badge--success'"
+              [class.dc-badge--warning]="lab.statusClass === 'badge--warning'"
+            >{{ lab.status }}</span>
+          </div>
+          <p class="higiene__lab-card__tipo">{{ lab.tipo }}</p>
+          <p class="higiene__lab-card__ult">{{ lab.ultimaAnalise }}</p>
+        </div>
+      }
+    </div>
+
+    <div class="higiene__import-zone">
+      <h3 class="higiene__import-zone__title">Importar laudo / planilha / certificado laboratorial</h3>
+      <p class="higiene__import-zone__sub">PDF · XLS · XLSX · CSV — validação automática dos resultados e confronto com NR-15 / ACGIH / NHO.</p>
+      <button class="dc-btn-primary">Selecionar arquivo</button>
+    </div>
+  }
+
+</div>

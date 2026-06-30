@@ -1,0 +1,53 @@
+<aside class="sidebar">
+  <!-- Logo MVN -->
+  <div class="sidebar__logo">
+    <div class="sidebar__logo-circle">M</div>
+    <div>
+      <div class="sidebar__logo-name">MVN</div>
+      <div class="sidebar__logo-sub">CONSULTANT</div>
+    </div>
+  </div>
+
+  <!-- Dona Corina Card -->
+  <div class="sidebar__corina">
+    <div class="sidebar__corina-avatar">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="rgba(255,255,255,.92)">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 22c0-4.4 3.6-8 8-8s8 3.6 8 8z"/>
+      </svg>
+    </div>
+    <div>
+      <div class="sidebar__corina-name">
+        Dona Corina
+        <span class="sidebar__corina-dot"></span>
+      </div>
+      <div class="sidebar__corina-role">Auditora Inteligente</div>
+    </div>
+  </div>
+
+  <div class="sidebar__divider"></div>
+
+  <!-- Navigation -->
+  <nav class="sidebar__nav">
+    @for (item of navItems; track item.key) {
+      <a
+        class="sidebar__nav-item"
+        [routerLink]="'/' + item.key"
+        routerLinkActive="sidebar__nav-item--active"
+        [title]="item.label"
+      >
+        <span class="sidebar__nav-icon" [innerHTML]="getSvg(item.icon)"></span>
+        <span>{{ item.label }}</span>
+      </a>
+    }
+  </nav>
+
+  <!-- Status bar -->
+  <div class="sidebar__status">
+    <span class="sidebar__status-row">
+      <span class="sidebar__status-dot"></span>
+      RAG ativo · Claude API · REGULARE
+    </span>
+    <br>v4.1 · Auditora Inteligente · Demonstração
+  </div>
+</aside>

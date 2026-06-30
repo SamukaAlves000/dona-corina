@@ -1,0 +1,68 @@
+<div class="amb">
+
+  <div class="amb__header">
+    <div>
+      <h1 class="amb__title">Gestão de Licenças e Condicionantes</h1>
+      <p class="amb__subtitle">Licenciamento, condicionantes e obrigações ambientais.</p>
+    </div>
+    <button class="dc-btn-primary">+ Nova Licença</button>
+  </div>
+
+  <!-- KPIs -->
+  <div class="amb__kpis">
+    @for (k of ambKpis; track k.label) {
+      <div [style]="k.cardStyle">
+        <div class="amb__kpi-label">{{ k.label }}</div>
+        <div class="amb__kpi-value">{{ k.value }}</div>
+      </div>
+    }
+  </div>
+
+  <!-- Charts row -->
+  <div class="amb__charts">
+
+    <!-- Licenças por Tipo -->
+    <div class="amb__chart-card">
+      <h3 class="amb__chart-title">Licenças por Tipo (LP / LI / LO)</h3>
+      @for (l of licBars; track l.label) {
+        <div class="amb__bar-row">
+          <div class="amb__bar-label">{{ l.label }}</div>
+          <div class="amb__bar-track">
+            <div class="amb__bar-fill" [style]="l.fillStyle"></div>
+          </div>
+          <div class="amb__bar-val">{{ l.val }}</div>
+        </div>
+      }
+    </div>
+
+    <!-- Condicionantes por Status -->
+    <div class="amb__chart-card">
+      <h3 class="amb__chart-title">Condicionantes por Status</h3>
+      @for (c of condBars; track c.label) {
+        <div class="amb__bar-row">
+          <div class="amb__bar-label amb__bar-label--short">{{ c.label }}</div>
+          <div class="amb__bar-track">
+            <div class="amb__bar-fill" [style]="c.fillStyle"></div>
+          </div>
+          <div class="amb__bar-val">{{ c.val }}</div>
+        </div>
+      }
+    </div>
+
+  </div>
+
+  <!-- Agenda -->
+  <div class="amb__agenda-card">
+    <h3 class="amb__chart-title">Agenda de Obrigações Ambientais</h3>
+    @for (ag of agenda; track ag.text) {
+      <div class="amb__agenda-row">
+        <div class="amb__agenda-left">
+          <span [style]="ag.dotStyle"></span>
+          <span class="amb__agenda-text">{{ ag.text }}</span>
+        </div>
+        <span [style]="ag.dateStyle">{{ ag.date }}</span>
+      </div>
+    }
+  </div>
+
+</div>

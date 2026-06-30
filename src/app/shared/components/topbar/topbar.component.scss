@@ -1,0 +1,268 @@
+.topbar {
+  position: relative;
+  height: 66px;
+  flex: none;
+  background: var(--dc-topbar-bg);
+  border-bottom: 1px solid var(--dc-border);
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  gap: 12px;
+  z-index: 50;
+
+  &__num {
+    width: 30px;
+    height: 30px;
+    flex: none;
+    border-radius: 9px;
+    background: var(--dc-primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+  }
+
+  &__title {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: .4px;
+    color: var(--dc-text);
+    white-space: nowrap;
+  }
+
+  &__spacer { flex: 1; }
+
+  &__minuta {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .6px;
+    color: var(--dc-purple);
+    background: var(--dc-purple-bg);
+    border: 1px solid var(--dc-purple-border);
+    padding: 6px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  &__icon-btn {
+    position: relative;
+    width: 38px;
+    height: 38px;
+    flex: none;
+    border-radius: 10px;
+    background: var(--dc-surface);
+    border: 1px solid var(--dc-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #6b7280;
+    transition: background .15s, border-color .15s;
+
+    &:hover { background: #f1f2fa; border-color: #d1d5e8; }
+  }
+
+  &__notif-dot {
+    position: absolute;
+    top: 7px; right: 8px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--dc-danger-mid);
+    border: 1.5px solid var(--dc-topbar-bg);
+  }
+
+  &__user {
+    width: 38px;
+    height: 38px;
+    flex: none;
+    border-radius: 10px;
+    background: #1f2544;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity .15s;
+    &:hover { opacity: .85; }
+  }
+
+  &__overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+  }
+
+  // ── Dropdowns ──────────────────────────────────────────────────────────────
+  &__dropdown {
+    position: absolute;
+    top: 58px;
+    background: var(--dc-surface);
+    border: 1px solid #e4e7f2;
+    border-radius: 16px;
+    box-shadow: var(--dc-shadow-menu);
+    z-index: 70;
+    overflow: hidden;
+    animation: fabPanel .2s ease;
+
+    &--search { right: 136px; width: 420px; }
+    &--notif  { right: 170px; width: 340px; }
+    &--config { right: 56px;  width: 300px; }
+    &--user   { right: 8px;   width: 268px; }
+  }
+
+  &__dd-search-input {
+    padding: 14px 16px;
+    border-bottom: 1px solid #eef0f6;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      color: var(--dc-text);
+      background: transparent;
+      font-family: var(--dc-font);
+    }
+  }
+
+  &__dd-body {
+    max-height: 340px;
+    overflow-y: auto;
+    padding: 8px;
+  }
+
+  &__dd-empty {
+    padding: 24px;
+    text-align: center;
+    color: var(--dc-text-label);
+    font-size: 13px;
+  }
+
+  &__dd-section-label {
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: .5px;
+    color: var(--dc-text-label);
+    padding: 8px 12px 4px;
+  }
+
+  &__dd-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    width: 100%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    font-family: var(--dc-font);
+    transition: background .1s;
+    &:hover { background: #f5f6fc; }
+  }
+
+  &__dd-item-num {
+    width: 26px;
+    height: 26px;
+    flex: none;
+    border-radius: 8px;
+    background: var(--dc-primary-light);
+    color: var(--dc-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11.5px;
+    font-weight: 800;
+  }
+
+  &__dd-item-label {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--dc-text);
+  }
+
+  &__dd-header {
+    padding: 14px 18px;
+    border-bottom: 1px solid #eef0f6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__dd-header-simple {
+    padding: 14px 18px;
+    border-bottom: 1px solid #eef0f6;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--dc-text);
+  }
+
+  &__dd-title { font-size: 13px; font-weight: 800; color: var(--dc-text); }
+
+  &__dd-notif {
+    display: flex;
+    gap: 11px;
+    padding: 11px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    &:hover { background: #f5f6fc; }
+  }
+
+  &__dd-notif-text { flex: 1; }
+  &__dd-notif-main { font-size: 13px; font-weight: 600; color: #374151; display: block; line-height: 1.4; }
+  &__dd-notif-time { font-size: 11px; color: var(--dc-text-label); }
+
+  &__dd-footer {
+    padding: 12px;
+    text-align: center;
+    border-top: 1px solid #eef0f6;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--dc-primary);
+    cursor: pointer;
+    &:hover { background: var(--dc-primary-light); }
+  }
+
+  &__dd-menu-item {
+    display: block;
+    width: 100%;
+    padding: 11px 12px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    font-family: var(--dc-font);
+    transition: background .1s;
+    &:hover { background: #f5f6fc; }
+  }
+
+  &__dd-menu-label { font-size: 13.5px; font-weight: 700; color: var(--dc-text); display: block; }
+  &__dd-menu-sub   { font-size: 11.5px; color: var(--dc-text-label); }
+
+  &__dd-user-header {
+    padding: 18px 18px 16px;
+    background: linear-gradient(135deg, #2a2f52, #1f2544);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__dd-user-avatar {
+    width: 44px; height: 44px; flex: none;
+    border-radius: 50%;
+    background: rgba(255,255,255,.16);
+    display: flex; align-items: flex-end; justify-content: center;
+    overflow: hidden;
+  }
+
+  &__dd-user-name { font-size: 14.5px; font-weight: 800; }
+  &__dd-user-role { font-size: 11.5px; opacity: .82; margin-top: 1px; }
+}

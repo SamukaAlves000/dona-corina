@@ -1,0 +1,58 @@
+<!-- FAB panel -->
+@if (open()) {
+  <div class="fab-panel" (click)="$event.stopPropagation()">
+    <div class="fab-panel__header">
+      <div class="fab-panel__avatar">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="rgba(255,255,255,.95)">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 22c0-4.4 3.6-8 8-8s8 3.6 8 8z"/>
+        </svg>
+      </div>
+      <div class="fab-panel__header-info">
+        <div class="fab-panel__name">Dona Corina</div>
+        <div class="fab-panel__status">Auditora Inteligente · online</div>
+      </div>
+    </div>
+
+    <div class="fab-panel__body">
+      <div class="fab-panel__input-row">
+        <input
+          class="fab-panel__input"
+          [value]="query()"
+          (input)="query.set($any($event.target).value)"
+          (keydown)="onKey($event)"
+          placeholder="Pergunte à Dona Corina…"
+        />
+        <button class="fab-panel__send" (click)="goCentral()" title="Ir para Central">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="fab-panel__shortcuts-label">ATALHOS RÁPIDOS</div>
+      <div class="fab-panel__shortcuts-grid">
+        @for (s of shortcuts; track s.key) {
+          <button class="fab-panel__shortcut" (click)="go(s.key)">{{ s.label }}</button>
+        }
+      </div>
+    </div>
+  </div>
+}
+
+<!-- FAB button -->
+<div class="fab-btn" (click)="toggle()" title="Dona Corina">
+  <div class="fab-btn__circle">
+    <svg width="44" height="44" viewBox="0 0 24 24" fill="rgba(255,255,255,.96)">
+      <circle cx="12" cy="8" r="4"/>
+      <path d="M4 22c0-4.4 3.6-8 8-8s8 3.6 8 8z"/>
+    </svg>
+  </div>
+  <span class="fab-btn__dot"></span>
+</div>
+
+<!-- Close overlay -->
+@if (open()) {
+  <div class="fab-overlay" (click)="toggle()"></div>
+}

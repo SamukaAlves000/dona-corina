@@ -1,0 +1,78 @@
+<div class="normas">
+
+  <div class="normas__header">
+    <div>
+      <h1 class="normas__title">Central de Atualização Normativa</h1>
+      <p class="normas__subtitle">Centro de Controle da Corina — monitoramento contínuo de normas, alertas e atualização <strong>somente com supervisão humana</strong> do Senior Master.</p>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="normas__kpis">
+    @for (k of normKpis; track k.label) {
+      <div [style]="k.cardStyle">
+        <div class="normas__kpi-label">{{ k.label }}</div>
+        <div class="normas__kpi-value">{{ k.value }}</div>
+      </div>
+    }
+  </div>
+
+  <!-- Two-col content -->
+  <div class="normas__two-col">
+
+    <!-- Atualizações detectadas -->
+    <div>
+      <h3 class="normas__section-title">Atualizações Detectadas</h3>
+      @for (a of normAlerts; track a.norma) {
+        <div class="normas__alert-card">
+          <div class="normas__alert-head">
+            <div>
+              <div class="normas__alert-norma">{{ a.norma }}</div>
+              <div class="normas__alert-meta">{{ a.fonte }} · detectado {{ a.data }} · {{ a.tema }}</div>
+            </div>
+            <span [style]="a.prioStyle">{{ a.prio }}</span>
+          </div>
+          <p class="normas__alert-resumo">{{ a.resumo }}</p>
+          <div class="normas__alert-footer">
+            <div>
+              <span class="normas__footer-label">MÓDULOS AFETADOS</span>
+              <div class="normas__footer-val">{{ a.mods }}</div>
+            </div>
+            <div>
+              <span class="normas__footer-label">DOCUMENTOS IMPACTADOS</span>
+              <div class="normas__footer-val">{{ a.docs }}</div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Right panel -->
+    <div>
+      <div class="normas__side-card">
+        <div class="normas__side-title">Fontes Monitoradas</div>
+        <div class="normas__sources">
+          @for (s of normSources; track s) {
+            <span class="normas__source-chip">{{ s }}</span>
+          }
+        </div>
+      </div>
+
+      <div class="normas__side-card">
+        <div class="normas__side-title">Base Normativa Versionada</div>
+        @for (v of normVersions; track v.norma) {
+          <div class="normas__version-row">
+            <div class="normas__version-top">
+              <span class="normas__version-norma">{{ v.norma }}</span>
+              <span [style]="v.stStyle">{{ v.st }}</span>
+            </div>
+            <div class="normas__version-meta">{{ v.ant }} → {{ v.nova }} · {{ v.data }} · {{ v.impacto }}</div>
+            <div class="normas__version-aprov">Aprovador: {{ v.aprov }}</div>
+          </div>
+        }
+      </div>
+    </div>
+
+  </div>
+
+</div>

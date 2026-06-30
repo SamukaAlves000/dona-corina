@@ -1,0 +1,116 @@
+<div class="grc">
+
+  <div class="grc__header">
+    <div>
+      <h1 class="grc__title">GRC / Sustentabilidade</h1>
+      <p class="grc__subtitle">Governança, Riscos, Compliance e relatórios de Sustentabilidade rastreáveis (GRI · ESG · ODS).</p>
+    </div>
+    <div class="grc__header-btns">
+      <button class="dc-btn-outline">Relatório GRC</button>
+      <button class="dc-btn-primary">Relatório de Sustentabilidade</button>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="grc__tabs">
+    @for (t of tabs; track t.key) {
+      <div class="grc__tab" [class.grc__tab--active]="activeTab() === t.key" (click)="activeTab.set(t.key)">{{ t.label }}</div>
+    }
+  </div>
+
+  <!-- PAINEL -->
+  @if (activeTab() === 'painel') {
+    <div class="grc__kpis">
+      @for (k of grcKpis; track k.label) {
+        <div [style]="k.cardStyle">
+          <div class="grc__kpi-label">{{ k.label }}</div>
+          <div class="grc__kpi-value">{{ k.value }}</div>
+        </div>
+      }
+    </div>
+
+    <div class="grc__pillars">
+      @for (p of esgPillars; track p.tag) {
+        <div class="grc__pillar-card">
+          <div class="grc__pillar-top">
+            <span [style]="p.tagStyle">{{ p.tag }}</span>
+            <span class="grc__pillar-score">{{ p.score }}</span>
+          </div>
+          <div class="grc__pillar-title">{{ p.title }}</div>
+          @for (it of p.items; track it.label) {
+            <div class="grc__pillar-item">
+              <span>{{ it.label }}</span>
+              <span class="grc__pillar-val">{{ it.val }}</span>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+
+  <!-- GRI -->
+  @if (activeTab() === 'gri') {
+    <div class="grc__gri-card">
+      <div class="grc__gri-head-text">
+        <div class="grc__gri-title">Checklist & Matriz GRI</div>
+        <div class="grc__gri-sub">Padrões GRI 2 · GRI 3 · GRI 200 · GRI 300 · GRI 400 — indicador × evidência × status × responsável × página.</div>
+      </div>
+      <div class="grc__gri-thead">
+        <div>GRI</div>
+        <div>INDICADOR · TEMA MATERIAL</div>
+        <div>RESPONSÁVEL</div>
+        <div>EVIDÊNCIA</div>
+        <div>STATUS</div>
+        <div>PÁG.</div>
+      </div>
+      @for (g of griRows; track g.code) {
+        <div class="grc__gri-row">
+          <div class="grc__gri-code">{{ g.code }}</div>
+          <div>
+            <div class="grc__gri-ind">{{ g.ind }}</div>
+            <div class="grc__gri-tema">{{ g.tema }}</div>
+          </div>
+          <div class="grc__gri-resp">{{ g.resp }}</div>
+          <div class="grc__gri-evid">{{ g.evid }}</div>
+          <div><span [style]="g.statusStyle">{{ g.status }}</span></div>
+          <div class="grc__gri-pag">{{ g.pag }}</div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- MATERIALIDADE -->
+  @if (activeTab() === 'mat') {
+    <div class="grc__mat-grid">
+
+      <div class="grc__mat-card">
+        <div class="grc__mat-title">Matriz de Materialidade</div>
+        <div class="grc__mat-sub">Relevância para partes interessadas (Y) × impacto para a organização (X).</div>
+        <div class="grc__mat-plot">
+          <div class="grc__mat-vline"></div>
+          <div class="grc__mat-hline"></div>
+          @for (m of matPoints; track m.label) {
+            <div [style]="m.dotStyle" [title]="m.label">
+              <span [style]="m.labelStyle">{{ m.label }}</span>
+            </div>
+          }
+          <div class="grc__mat-corner">ALTA PRIORIDADE ↗</div>
+        </div>
+      </div>
+
+      <div class="grc__mat-card">
+        <div class="grc__mat-title">Temas Materiais</div>
+        @for (t of matThemes; track t.label) {
+          <div class="grc__theme-row">
+            <span [style]="t.dotStyle"></span>
+            <span class="grc__theme-label">{{ t.label }}</span>
+            <span [style]="t.relStyle">{{ t.rel }}</span>
+          </div>
+        }
+        <button class="grc__add-tema-btn">+ Cadastrar Tema Material</button>
+      </div>
+
+    </div>
+  }
+
+</div>

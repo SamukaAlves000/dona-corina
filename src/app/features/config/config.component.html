@@ -1,0 +1,32 @@
+<div class="cfg">
+
+  <div class="cfg__header">
+    <div>
+      <h1 class="cfg__title">Configurações — Segurança e LGPD</h1>
+      <p class="cfg__subtitle">Controles de privacidade por desenho herdados do projeto REGULARE SST.</p>
+    </div>
+  </div>
+
+  <!-- Toggle rows -->
+  <div class="cfg__list">
+    @for (row of rows(); track row.title; let i = $index) {
+      <div class="cfg__row">
+        <div class="cfg__row-text">
+          <div class="cfg__row-title">{{ row.title }}</div>
+          <div class="cfg__row-sub">{{ row.sub }}</div>
+        </div>
+        <div [style]="trackStyle(row)" (click)="toggle(i)">
+          <div [style]="knobStyle(row)"></div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Guardrails banner -->
+  <div class="cfg__guardrails">
+    <b>Guardrails da IA ativos:</b> a Corina nunca emite documento de efeito legal sem
+    responsável técnico habilitado, não inventa base normativa (cita a fonte recuperada via RAG)
+    e, em dúvida, para e consulta o usuário.
+  </div>
+
+</div>

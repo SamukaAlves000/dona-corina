@@ -1,0 +1,169 @@
+.docsger {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 28px;
+  animation: fadeUp .3s ease both;
+}
+
+.docsger__title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--dc-text);
+  margin: 0;
+}
+
+.docsger__subtitle {
+  font-size: 15px;
+  color: #6b7280;
+  margin: 4px 0 0;
+  line-height: 1.5;
+}
+
+// ── Flow chips ──────────────────────────────────────────────────────────────────
+.docsger__flow-chips {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.docsger__flow-chip {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #6b7280;
+  background: #f3f4fb;
+  border: 1px solid #e6e8f2;
+}
+
+// ── Table ───────────────────────────────────────────────────────────────────────
+.docsger__table-wrap {
+  background: #fff;
+  border: 1px solid #e9ebf3;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(20,24,51,.05);
+}
+
+.docsger__thead,
+.docsger__row {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1.4fr 1.3fr 1.4fr 0.8fr;
+  padding: 13px 22px;
+  align-items: center;
+}
+
+.docsger__thead {
+  border-bottom: 1px solid #eef0f6;
+  font-size: 11px;
+  font-weight: 800;
+  color: #9aa0bd;
+  letter-spacing: .5px;
+}
+
+.docsger__row {
+  padding: 15px 22px;
+  border-bottom: 1px solid #f4f5fa;
+
+  &:last-child { border-bottom: none; }
+}
+
+.docsger__doc-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #1f2544;
+}
+
+.docsger__doc-tipo {
+  font-size: 11.5px;
+  color: #9aa0bd;
+  margin-top: 2px;
+}
+
+.docsger__resp {
+  font-size: 12.5px;
+  color: #6b7280;
+}
+
+.docsger__conclusao {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.docsger__bar-bg {
+  flex: 1;
+  height: 7px;
+  border-radius: 999px;
+  background: #eef0f6;
+  overflow: hidden;
+}
+
+.docsger__pct {
+  font-size: 12px;
+  font-weight: 800;
+  color: #374151;
+  flex-shrink: 0;
+}
+
+.docsger__pend {
+  font-size: 12px;
+  color: #4b5563;
+}
+
+.docsger__falta {
+  font-size: 11px;
+  color: #dc2626;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.docsger__actions {
+  display: flex;
+  gap: 6px;
+}
+
+.docsger__btn-abrir {
+  padding: 7px 10px;
+  background: #eef0fe;
+  color: #4f46e5;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 11.5px;
+  cursor: pointer;
+  font-family: var(--dc-font);
+
+  &:hover { background: #e0e4ff; }
+}
+
+.docsger__btn-aprovar {
+  padding: 7px 10px;
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 11.5px;
+  cursor: pointer;
+  font-family: var(--dc-font);
+
+  &:hover { background: #4338ca; }
+}
+
+// ── Disclaimer ──────────────────────────────────────────────────────────────────
+.docsger__disclaimer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  background: #f5edff;
+  border: 1px solid #e6d8fb;
+  border-radius: 12px;
+  font-size: 12.5px;
+  color: #6d28d9;
+  font-weight: 600;
+  line-height: 1.5;
+}

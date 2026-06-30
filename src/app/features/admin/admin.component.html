@@ -1,0 +1,111 @@
+<div class="admin">
+
+  <div class="admin__header">
+    <div>
+      <h1 class="admin__title">Governança e Perfis de Acesso</h1>
+      <p class="admin__subtitle">RBAC com segregação de funções, escopo por cliente e trilha LGPD. Nenhuma atualização estrutural ocorre sem aprovação do <strong>Senior Master</strong>.</p>
+    </div>
+    <button class="dc-btn-primary">+ Novo Usuário</button>
+  </div>
+
+  <!-- KPIs -->
+  <div class="admin__kpis">
+    @for (k of adminKpis; track k.label) {
+      <div [style]="k.cardStyle">
+        <div class="admin__kpi-label">{{ k.label }}</div>
+        <div class="admin__kpi-value">{{ k.value }}</div>
+      </div>
+    }
+  </div>
+
+  <!-- Users table + Perms -->
+  <div class="admin__two-col">
+
+    <!-- Users table -->
+    <div class="admin__users-card">
+      <div class="admin__card-title">Usuários & Perfis</div>
+      <div class="admin__users-head">
+        <div>USUÁRIO</div>
+        <div>PERFIL (RBAC)</div>
+        <div>CLIENTE</div>
+        <div>MFA</div>
+      </div>
+      @for (u of adminUsers; track u.email) {
+        <div class="admin__users-row">
+          <div>
+            <div class="admin__user-name">{{ u.name }}</div>
+            <div class="admin__user-email">{{ u.email }}</div>
+          </div>
+          <div><span [style]="u.roleStyle">{{ u.role }}</span></div>
+          <div class="admin__user-client">{{ u.client }}</div>
+          <div><span [style]="u.mfaStyle">{{ u.mfa }}</span></div>
+        </div>
+      }
+    </div>
+
+    <!-- Permissions matrix -->
+    <div class="admin__perms-card">
+      <div class="admin__card-title">Matriz de Permissões (RBAC)</div>
+      @for (p of adminPerms; track p.role) {
+        <div class="admin__perm-row">
+          <span class="admin__perm-role">{{ p.role }}</span>
+          <span class="admin__perm-scope">{{ p.scope }}</span>
+        </div>
+      }
+      <button class="admin__config-btn">Abrir Segurança & LGPD</button>
+    </div>
+
+  </div>
+
+  <!-- RBAC Profile cards -->
+  <div class="admin__profiles-title">Perfis de Acesso (RBAC)</div>
+  <div class="admin__profiles-grid">
+    @for (p of govProfiles; track p.n) {
+      <div class="admin__profile-card" [style.border-top-color]="p.accent">
+        <div class="admin__profile-head">
+          <span class="admin__profile-n">{{ p.n }}</span>
+          <span [style]="p.badgeStyle">{{ p.role }}</span>
+        </div>
+        <div class="admin__profile-user">{{ p.user }}</div>
+        <div class="admin__profile-nivel">{{ p.nivel }}</div>
+        <div class="admin__profile-section admin__profile-section--can">PERMISSÕES</div>
+        @for (c of p.can; track c) {
+          <div class="admin__profile-item admin__profile-item--can">
+            <span class="admin__check">✓</span><span>{{ c }}</span>
+          </div>
+        }
+        @if (p.cannot.length > 0) {
+          <div class="admin__profile-section admin__profile-section--cannot">RESTRIÇÕES</div>
+          @for (x of p.cannot; track x) {
+            <div class="admin__profile-item admin__profile-item--cannot">
+              <span class="admin__cross">✕</span><span>{{ x }}</span>
+            </div>
+          }
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Scope + Log fields -->
+  <div class="admin__bottom-grid">
+    <div class="admin__bottom-card">
+      <div class="admin__bottom-title">Escopo de Controle de Acesso</div>
+      <div class="admin__bottom-sub">Todo acesso é controlado pela combinação de:</div>
+      <div class="admin__chips">
+        @for (s of govScopes; track s) {
+          <span class="admin__scope-chip">{{ s }}</span>
+        }
+      </div>
+    </div>
+    <div class="admin__bottom-card">
+      <div class="admin__bottom-title">Toda Ação Gera Registro</div>
+      <div class="admin__bottom-sub">Trilha de auditoria append-only · LGPD:</div>
+      <div class="admin__chips">
+        @for (g of govLogFields; track g) {
+          <span class="admin__log-chip">{{ g }}</span>
+        }
+      </div>
+    </div>
+  </div>
+
+</div>
